@@ -1,0 +1,9 @@
+.cursor {
+  position: fixed;
+  width: 800px;
+  height: 800px;
+  border-radius: 100%;
+  background: radial-gradient(circle, #d3d3d320, #00000000);
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* Ensures the cursor doesn't interfere with mouse events */
+}
