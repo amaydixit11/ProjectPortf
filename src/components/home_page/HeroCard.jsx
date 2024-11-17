@@ -42,10 +42,10 @@ const HeroCard = ({ className }) => {
 
       {/* Download Resume Button */}
       <div className="absolute bottom-4 right-4 flex items-center justify-center rounded-2xl p-2 bg-[#ffbf3c] cursor-pointer">
-        <div className="flex items-center font-sans text-2xl md:text-2xl font-bold tracking-wide text-white">
-          Resume
-        </div>
-        <FaDownload className="m-2 text-white" />
+        <a href="https://drive.google.com/file/d/1aHSOmTWOPRKqGKMUmfnGKhugBub2t0GC/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="flex items-center font-sans text-2xl md:text-2xl font-bold tracking-wide text-white">
+          <span>Resume</span>
+          <FaDownload className="m-2 text-white" />
+        </a>
       </div>
     </div>
   );
