@@ -34,8 +34,8 @@ const HeroCard = ({ className }) => {
       </div>
 
       <div className="text-xl text-gray-200 leading-relaxed">
-        Hello! I'm Amay Dixit, currently a student with a passion for developing
-        full-stack web applications and machine learning models. I'm skilled in
+        Hello! I&apos;m Amay Dixit, currently a student with a passion for developing
+        full-stack web applications and machine learning models. I&apos;m skilled in
         various technologies, including frontend and backend development, app
         creation, and data science.
       </div>
