@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+.section-fade-in {
+  animation: sectionFadeIn 0.5s ease-out forwards;
+}
+
+html, body, * {
+  overflow-x: hidden;
+}
+
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body {
+  color-scheme: light dark;
+}
+
+/* Dark mode still works with `class` */
+@variant dark (&:where(.dark, .dark *)) {}
+
+/* Add your custom theme tokens */
+@theme {
+  /* Fonts */
+  --font-inter: var(--font-inter);
+  --font-aspekta: var(--font-aspekta);
+
+  /* Colors */
+  --color-slate-50: #f9fafb;
+  --color-slate-100: #f3f4f6;
+  --color-slate-200: #e5e7eb;
+  --color-slate-300: #d1d5db;
+  --color-slate-400: #9ca3af;
+  --color-slate-500: #6b7280;
+  --color-slate-600: #4b5563;
+  --color-slate-700: #374151;
+  --color-slate-800: #1f2937;
+  --color-slate-900: #111827;
+  --color-slate-950: #030712;
+
+  --color-sky-500: #0ea5e9;
+}
+
+@theme {
+  --color-primary: #2563eb;   /* Elegant Blue */
+  --color-secondary: #10b981; /* Green */
+  --color-accent: #ef4444;    /* Red */
+  --color-purple: #8b5cf6;    /* Purple */
+  --color-orange: #f97316;    /* Orange */
+  --color-gray-text: #6b7280; /* Neutral Gray */
+}
