@@ -64,7 +64,7 @@ export default function Header() {
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition"
           >
             <Mail size={16} />
-            <span className="hidden sm:inline">Let's Connect</span>
+            <span className="hidden sm:inline">Let&apos;s Connect</span>
           </Link>
         </div>
       </div>

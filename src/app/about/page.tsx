@@ -86,17 +86,17 @@ const About = () => {
             </h2>
             <div className="prose prose-gray dark:prose-invert max-w-none">
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                I'm a B.Tech student at IIT Bhilai passionate about backend systems and infrastructure. 
+                I&apos;m a B.Tech student at IIT Bhilai passionate about backend systems and infrastructure. 
                 I love building tools that solve real problems - from API gateways and service meshes to 
                 community platforms for my university.
               </p>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                 As Coordinator of OpenLake (our open-source club), I help fellow students contribute to 
-                meaningful projects. I've also worked with organizations like MOSIP and IIT Bombay, 
+                meaningful projects. I&apos;ve also worked with organizations like MOSIP and IIT Bombay, 
                 developing systems for digital identity and computational tools.
               </p>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                When I'm not coding, you'll find me exploring new technologies, solving competitive 
+                When I&apos;m not coding, you&apos;ll find me exploring new technologies, solving competitive 
                 programming problems, or thinking about how to make complex systems more elegant and efficient.
               </p>
             </div>
@@ -151,7 +151,7 @@ const About = () => {
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               I believe great engineers are also great learners and community builders. I organize knowledge 
               using Zettelkasten methods, compete in programming contests, and always look for opportunities 
-              to help fellow developers grow. I'm particularly interested in the intersection of systems engineering 
+              to help fellow developers grow. I&apos;m particularly interested in the intersection of systems engineering 
               and machine learning.
             </p>
           </div>
