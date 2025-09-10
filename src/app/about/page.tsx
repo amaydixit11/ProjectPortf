@@ -12,10 +12,8 @@ import { QuickLinksWidget } from "@/components/about/QuickLinks";
 import {
   personalInfo,
   bioData,
-  skillsData,
   beyondCodeData,
   getMockCurrentActivity,
-  getMockCurrentTrack,
   achievementsData,
   learningData,
   quickLinksData,
