@@ -22,6 +22,7 @@ import {
 import { highlightText } from "@/utils/highlightText";
 import Link from "next/link";
 import ConnectWidget from "@/components/about/ConnectWidget";
+import Map from "@/components/about/Map";
 
 const About: React.FC = () => {
   const currentTime = useCurrentTime();
@@ -103,6 +104,7 @@ const About: React.FC = () => {
           <AchievementsWidget achievements={achievementsData} />
           <LearningWidget technologies={learningData} />
           <QuickLinksWidget links={quickLinksData} />
+          <Map />
         </div>
       </div>
     </div>
