@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { Sun, Moon, Github, Linkedin, Mail } from "lucide-react";
+import { Sun, Moon, Github, Linkedin, Mail, Twitter } from "lucide-react";
 import Link from "next/link";
 
 export default function Header() {
@@ -39,7 +39,13 @@ export default function Header() {
             >
               <Github size={18} />
             </Link>
-
+            <Link
+              href="https://x.com/AmayDixit11"
+              className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-accent/20 transition"
+              aria-label="X"
+            >
+              <Twitter size={18} />
+            </Link>
             <Link
               href="https://www.linkedin.com/in/amay-dixit-462113284"
               className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-accent/20 transition"
