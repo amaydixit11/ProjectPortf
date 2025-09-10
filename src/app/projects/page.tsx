@@ -8,8 +8,6 @@ import { highlightText } from "@/utils/highlightText";
 import { Project } from "@/types/projects";
 
 const Projects: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-
   // Merge featured projects into all projects
   const allProjects = projectsData.projects;
 
@@ -47,13 +45,13 @@ const Projects: React.FC = () => {
           {/* Collaboration Section */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-              Let's Collaborate
+              Let&apos;s Collaborate
             </h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               Interested in collaborating on{" "}
               {highlightText("open-source projects")},{" "}
               {highlightText("system design")}, or{" "}
-              {highlightText("backend infrastructure")}? I'm always excited to
+              {highlightText("backend infrastructure")}? I&apos;m always excited to
               work on challenging problems and contribute to meaningful
               projects. Check out my GitHub or reach out via email.
             </p>

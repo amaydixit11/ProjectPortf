@@ -3,7 +3,6 @@
 
 import React from "react";
 import Link from "next/link";
-import { Pin } from "lucide-react";
 import { Caveat } from "next/font/google";
 import styles from "./ConnectWidget.module.css";
 

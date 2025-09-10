@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { useCurrentTime } from "@/hooks/useCurrentTime";
 import { LocationTimeWidget } from "@/components/about/LocationTime";
 import { StatusWidget } from "@/components/about/Status";
-import { SpotifyWidget } from "@/components/about/Spotify";
 import { AchievementsWidget } from "@/components/about/Achievements";
 import { LearningWidget } from "@/components/about/Learning";
 import { QuickLinksWidget } from "@/components/about/QuickLinks";
@@ -22,8 +21,6 @@ import {
   quickLinksData,
   journeyData,
 } from "@/data/about";
-import { ExperienceTimeline } from "@/components/ExperienceTimeline";
-import { ProjectsGrid } from "@/components/ProjectsGrid";
 import { highlightText } from "@/utils/highlightText";
 import Link from "next/link";
 import ConnectWidget from "@/components/about/ConnectWidget";
@@ -31,7 +28,6 @@ import ConnectWidget from "@/components/about/ConnectWidget";
 const About: React.FC = () => {
   const currentTime = useCurrentTime();
   const [currentActivity] = useState(getMockCurrentActivity());
-  const currentTrack = getMockCurrentTrack();
 
   return (
     <div className="py-8 min-h-screen mt-20">
@@ -76,7 +72,6 @@ const About: React.FC = () => {
               ))}
             </div>
           </div>
-          <ExperienceTimeline /> {/* New section added */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
               Beyond Code
@@ -87,7 +82,7 @@ const About: React.FC = () => {
           </div>
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-            Let's Connect
+            Let&apos;s Connect
           </h2>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
             Always open to chatting about tech, projects, or ideas. Feel free to

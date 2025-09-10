@@ -5,11 +5,6 @@ import Link from "next/link";
 import { Project } from "@/types/projects";
 import { highlightText } from "@/utils/highlightText";
 
-interface ProjectCardProps {
-  project: Project;
-  featured?: boolean;
-}
-
 const getStatusColor = (status: string): string => {
   switch (status) {
     case "Live":

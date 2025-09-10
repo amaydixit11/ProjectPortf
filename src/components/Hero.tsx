@@ -8,7 +8,6 @@ import {
   Github,
   Linkedin,
   Twitter,
-  Globe,
 } from "lucide-react";
 
 const Hero = () => {
