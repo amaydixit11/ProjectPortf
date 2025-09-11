@@ -38,9 +38,9 @@ export const BlogPageClient: React.FC<BlogPageClientProps> = ({ posts, tags, cat
 
   return (
     <div className="py-8 min-h-screen mt-20">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Main Content */}
-        <div className="lg:col-span-3 space-y-8">
+        <div className="lg:col-span-2 space-y-8">
           {/* Header */}
           <div className="space-y-6">
             <div className="space-y-4">

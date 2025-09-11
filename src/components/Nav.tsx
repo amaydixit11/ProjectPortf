@@ -47,7 +47,7 @@ export default function Nav() {
                     href={item.href}
                     className={`flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-lg transition-colors ${
                       isActive
-                        ? "text-sky-500"
+                        ? "text-sky-500 dark:text-sky-400"
                         : "text-slate-400 dark:text-slate-500"
                     }`}
                   >

@@ -9,7 +9,7 @@ export default function Header() {
 
   return (
     <header className="w-full border-b border-border/40 bg-background/95 backdrop-blur-sm sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto flex items-center justify-between h-16 px-4 sm:px-6">
+      <div className="max-w-full mx-auto flex items-center justify-between h-16 px-4 sm:px-6">
         {/* Left - Logo/Name */}
         <div className="md:hidden flex items-center justify-end mr-5 mt-3">
           <Link href="/" className="flex items-center gap-2">
@@ -81,7 +81,7 @@ export default function Header() {
 
           {/* CTA Button */}
           <Link
-            href="/contact"
+            href="mailto:amayd@iitbhilai.ac.in"
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition"
           >
             <Mail size={16} />

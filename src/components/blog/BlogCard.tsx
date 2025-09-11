@@ -12,109 +12,85 @@ interface BlogCardProps {
 
 export const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
   return (
-    <article className="group relative">
-      <div className="flex flex-col md:flex-row gap-6 py-8 transition-all duration-300">
-        {/* Thumbnail */}
-        <div className="md:w-64 md:flex-shrink-0">
+    <article className="group">
+      <div className="flex gap-4 py-4">
+        {/* Square Thumbnail */}
+        <div className="w-16 h-16 flex-shrink-0">
           <Link href={`/blog/${post.slug}`}>
-            <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 cursor-pointer">
+            <div className="relative w-full h-full overflow-hidden rounded bg-gray-100 dark:bg-gray-800 cursor-pointer">
               {post.coverImage ? (
                 <Image
                   src={post.coverImage}
                   alt={post.title}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 256px"
+                  className="object-cover transition-transform duration-200 group-hover:scale-105"
+                  sizes="64px"
+                  width={64}
+                  height={64}
                 />
               ) : (
-                <div className="flex h-full items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-700">
-                  <div className="text-center">
-                    <div className="mx-auto h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-2">
-                      <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
-                        {post.title.charAt(0)}
-                      </span>
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">
-                      {post.category}
-                    </div>
-                  </div>
+                <div className="flex h-full items-center justify-center bg-gray-100 dark:bg-gray-800">
+                  <span className="text-lg font-bold text-gray-600 dark:text-gray-400">
+                    {post.title.charAt(0)}
+                  </span>
                 </div>
               )}
-              {/* Category Badge */}
-              <div className="absolute top-3 left-3">
-                <span className="inline-block px-2 py-1 text-xs font-medium bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-gray-100 rounded-md backdrop-blur-sm">
-                  {post.category}
-                </span>
-              </div>
             </div>
           </Link>
         </div>
 
         {/* Content */}
-        <div className="flex-1 space-y-4">
-          {/* Header */}
-          <div>
-            <Link href={`/blog/${post.slug}`}>
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer leading-tight">
-                {post.title}
-              </h2>
-            </Link>
-            <p className="text-gray-600 dark:text-gray-400 mt-3 leading-relaxed line-clamp-3">
-              {post.excerpt}
-            </p>
+        <div className="flex-1 min-w-0">
+          {/* Date and Category */}
+          <div className="flex items-center gap-2 mb-1 text-xs text-gray-600 dark:text-gray-400">
+            <Calendar size={12} />
+            <span>{formatDate(post.date)}</span>
+            <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
+            <span className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-2 py-0.5 rounded text-xs font-medium">
+              {post.category.toUpperCase()}
+            </span>
           </div>
 
-          {/* Tags */}
-          {post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {post.tags.slice(0, 4).map((tag, index) => (
-                <Link
-                  key={index}
-                  href={`/blog/tag/${tag.toLowerCase()}`}
-                  className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
-                >
-                  {tag}
-                </Link>
-              ))}
-              {post.tags.length > 4 && (
-                <span className="text-xs text-gray-500 dark:text-gray-400 px-2 py-1">
-                  +{post.tags.length - 4} more
-                </span>
-              )}
-            </div>
-          )}
+          {/* Title */}
+          <Link href={`/blog/${post.slug}`}>
+            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 hover:text-[var(--color-primary)] transition-colors cursor-pointer leading-tight mb-2 line-clamp-2">
+              {post.title}
+            </h2>
+          </Link>
 
-          {/* Metadata and Read More */}
-          <div className="flex items-center justify-between pt-2">
-            <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-              <div className="flex items-center gap-1">
-                <Calendar size={14} />
-                <span>{formatDate(post.date)}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Clock size={14} />
-                <span>{post.readingTime}</span>
-              </div>
-              {post.author && (
-                <div className="flex items-center gap-1">
-                  <User size={14} />
-                  <span>{post.author}</span>
-                </div>
-              )}
-            </div>
+          {/* Excerpt */}
+          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
+            {post.excerpt}
+          </p>
 
-            <Link
-              href={`/blog/${post.slug}`}
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium transition-colors group-hover:underline"
-            >
-              Read more →
-            </Link>
+          {/* Metadata */}
+          <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-1">
+              <Clock size={12} />
+              <span>{post.readingTime}</span>
+            </div>
+            {post.author && (
+              <div className="flex items-center gap-1">
+                <User size={12} />
+                <span>{post.author}</span>
+              </div>
+            )}
           </div>
+        </div>
+
+        {/* Arrow */}
+        <div className="flex-shrink-0 self-start pt-1">
+          <Link href={`/blog/${post.slug}`}>
+            <div className="text-[var(--color-primary)] opacity-0 group-hover:opacity-100 transition-opacity">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="m9 18 6-6-6-6"/>
+              </svg>
+            </div>
+          </Link>
         </div>
       </div>
       
       {/* Separator line */}
-      <div className="h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent"></div>
+      <div className="h-px bg-gray-200 dark:bg-gray-700"></div>
     </article>
   );
 };
