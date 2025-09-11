@@ -2,9 +2,9 @@
 import { CurrentActivity, Track } from "../types/about";
 
 export const personalInfo = {
-  location: "Durg, India",
+  location: "Bhilai , India",
   description:
-    "Backend engineer, system designer, and open-source enthusiast building scalable solutions.",
+    "Curious student-engineer who loves turning complex problems into elegant solutions through collaborative development. Building the future one line of code at a time, fueled by coffee and a passion for making technology accessible to everyone.",
 };
 
 export const bioData = {

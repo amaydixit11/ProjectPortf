@@ -10,6 +10,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Amay Dixit - Portfolio",
   description: "Portfolio of Amay Dixit, IIT Bhilai Student and Developer",
+    icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+  },
 };
 
 export default function RootLayout({

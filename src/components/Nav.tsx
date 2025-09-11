@@ -16,6 +16,20 @@ export default function Nav() {
 
   return (
     <div className="h-full w-full flex flex-col">
+      <div className="flex items-center justify-end mr-5 mt-3">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-10 h-10 rounded-full overflow-hidden relative">
+            <img
+              src="/amay3.png"
+              alt="Amay avatar"
+              // className="w-full h-full object-cover scale-300"
+              className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/5 w-[200%] h-[200%] object-cover"
+
+              // style={{ objectPosition: "center 100%" }}
+            />
+          </div>
+        </Link>
+      </div>
       {/* Spacer to push nav to center */}
       <div className="flex-1" />
 
