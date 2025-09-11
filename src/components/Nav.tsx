@@ -16,7 +16,7 @@ export default function Nav() {
 
   return (
     <div className="h-full w-full flex flex-col">
-      <div className="flex items-center justify-end mr-5 mt-3">
+      <div className="hidden md:flex items-center justify-end mr-5 mt-3">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-10 h-10 rounded-full overflow-hidden relative">
             <img
