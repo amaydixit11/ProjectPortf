@@ -28,10 +28,10 @@ export default function RootLayout({
           {/* Mobile Layout */}
           <div className="md:hidden flex flex-col h-screen overflow-hidden">
             {/* Main Content Area for Mobile */}
-            <main className="flex-1 flex flex-col overflow-hidden px-6">
-              <div className="w-full h-full max-w-[1072px] flex flex-col">
+            <main className="flex-1 flex flex-col overflow-hidden pl-6 justify-around">
+              <div className="w-full h-full max-w-[2000px] flex flex-col justify-around">
                 <Header />
-                <div className="flex-1 overflow-y-auto no-scrollbar pb-20 pt-4 px-1">
+                <div className="flex-1 overflow-y-auto no-scrollbar pb-20 pt-4 px-1 justify-around">
                   {children}
                 </div>
               </div>
