@@ -21,17 +21,41 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="max-w-7xl mx-auto">
-            <div className="min-h-screen flex">
-              <Nav />
-              <main className="grow overflow-hidden px-6">
-                <div className="w-full h-full max-w-[1072px] mx-auto flex flex-col">
-                  <Header />
+          {/* Mobile Layout */}
+          <div className="md:hidden flex flex-col h-screen overflow-hidden">
+            {/* Main Content Area for Mobile */}
+            <main className="flex-1 flex flex-col overflow-hidden px-6">
+              <div className="w-full h-full max-w-[1072px] flex flex-col">
+                <Header />
+                <div className="flex-1 overflow-y-auto no-scrollbar pb-20 pt-4 px-1">
                   {children}
                 </div>
-              </main>
+              </div>
+            </main>
+            
+            {/* Fixed Bottom Navigation for Mobile */}
+            <div className="fixed bottom-0 left-0 right-0 h-16 backdrop-blur-lg backdrop-filter bg-white/80 border-t dark:border-slate-800 z-50">
+              <Nav />
             </div>
-          </div>{" "}
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden md:flex h-screen overflow-hidden">
+            {/* Fixed Sidebar for Desktop */}
+            <div className="h-full backdrop-blur-lg backdrop-filter bg-white/80 border-t dark:border-slate-800 sticky top-0 left-0 h-full w-1/9 z-50 shrink-0 ml-6">
+              <Nav />
+            </div>
+
+            {/* Main Content Area for Desktop */}
+            <main className="flex-1 flex flex-col overflow-hidden px-6 border-l">
+              <div className="w-full h-full max-w-[1072px] flex flex-col">
+                <Header />
+                <div className="flex-1 overflow-y-auto no-scrollbar pb-6 pt-6">
+                  {children}
+                </div>
+              </div>
+            </main>
+          </div>
         </ThemeProvider>
       </body>
     </html>

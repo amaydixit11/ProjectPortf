@@ -16,7 +16,8 @@ const Hero = () => {
       {/* Left Content */}
       <div className="max-w-2xl space-y-6">
         <h1 className="text-4xl md:text-5xl font-bold leading-snug">
-          Hi, I&apos;m <span className="text-primary font-semibold">Amay Dixit</span>
+          Hi, I&apos;m{" "}
+          <span className="text-primary font-semibold">Amay Dixit</span>
         </h1>
 
         <h2 className="text-xl font-medium">
@@ -68,7 +69,7 @@ const Hero = () => {
             <Download size={18} />
             Download Resume
           </Link>
-                    <div className="flex gap-3">
+          <div className="flex gap-3">
             <Link
               href="https://github.com/amaydixit11"
               className="p-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
@@ -102,43 +103,6 @@ const Hero = () => {
             </Link>
           </div>
         </div>
-
-        {/* Social Links */}
-        {/* <div className="flex items-center gap-4 pt-2">
-        <div className="flex gap-3">
-            <Link
-            href="https://github.com/amaydixit11"
-            className="p-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
-            aria-label="GitHub"
-            >
-            <Github size={25} />
-            </Link>
-
-            <Link
-            href="https://www.linkedin.com/in/amay-dixit-462113284"
-            className="p-2 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
-            aria-label="LinkedIn"
-            >
-            <Linkedin size={25} />
-            </Link>
-
-            <Link
-            href="https://x.com/AmayDixit11"
-            className="p-2 text-gray-600 hover:text-blue-400 dark:text-gray-400 dark:hover:text-blue-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
-            aria-label="Twitter"
-            >
-            <Twitter size={25} />
-            </Link>
-
-            <Link
-            href="mailto:amayd@iitbhilai.ac.in"
-            className="p-2 text-gray-600 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
-            aria-label="Website"
-            >
-            <Mail size={25} />
-            </Link>
-        </div>
-        </div> */}
       </div>
 
       {/* Right Image */}
