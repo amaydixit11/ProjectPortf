@@ -13,7 +13,7 @@ const Map: React.FC<MapProps> = ({ className = "" }) => {
       <div className="flex items-center gap-2 mb-3">
         <MapIcon size={16} className="text-primary" />
         <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-          Map: Places I've been to
+          Map: Places I&apos;ve been to
         </span>
       </div>
       <div className="space-y-2">
