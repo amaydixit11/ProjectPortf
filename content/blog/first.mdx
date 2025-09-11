@@ -1,0 +1,88 @@
+---
+title: "Meta-Learning for Adaptive Model Selection in Learned Indexes"
+excerpt: "How I’m combining my love for systems and machine learning in a 10-week coursework project: building a meta-learning framework to choose the best models for learned database indexes."
+date: "11/09/2025"
+category: "Systems"
+tags: ["Meta-Learning", "Databases", "Indexes", "Machine Learning", "Coursework"]
+author: "Amay Dixit"
+published: true
+coverImage: "/blog/MetaIndex/thumbnail.png"
+---
+
+## Introduction
+
+Ever since I started digging into backend systems, I’ve been fascinated by how databases keep queries fast, no matter how big the data grows. This semester, for my **DSL501 – Machine Learning Major Project**, I finally found the perfect topic at the intersection of systems and ML:  
+**Meta-Learning-Based Adaptive Model Selection for Learned Indexes**.
+
+The project lets me explore database internals while applying meta-learning techniques — a combination I’ve been looking forward to for a while.
+
+---
+
+## Why Learned Indexes Need Help
+
+Traditional structures like B-Trees and hash tables work well but don’t exploit the shape of the data. *Learned indexes* (popularized by Kraska et al., 2018) treat the index as a model that predicts where a key lies in sorted storage.
+
+But current learned indexes often stick to **one model type** across an entire dataset — e.g., a single linear regression or neural network. Real-world data is messier:
+
+- Dense clusters (e.g., city coordinates)  
+- Sparse jumps (e.g., suburban areas)  
+- Linear stretches (e.g., highways)  
+
+Different regions have different patterns, yet the index forces one algorithm everywhere. That’s where meta-learning comes in.
+
+---
+
+## The Meta-Learning Idea
+
+Meta-learning — “learning to learn” — trains a higher-level model to choose the best algorithm for a problem based on its features.
+
+For indexes, each **data segment** becomes a “problem instance.”  
+I’ll extract statistical descriptors (skewness, variance, entropy, monotonicity, etc.) and feed them into a **Random Forest meta-learner**. The meta-learner predicts whether that segment should use:
+
+- Linear Regression (for smooth trends)  
+- Polynomial Regression (for curves)  
+- Decision Trees (for discontinuities)  
+- Shallow Neural Nets (for complex non-linear data)
+
+At query time, the system uses the chosen model to estimate key positions, with a traditional fallback for accuracy.
+
+---
+
+## What I’ll Be Building
+
+Over ten weeks, I plan to implement:
+
+1. **Feature Extractor** – computes ~15 statistical metrics for each segment.  
+2. **Model Zoo** – linear, polynomial, decision tree, and neural network implementations, all benchmarked.  
+3. **Meta-Learner** – trained on synthetic + SOSD datasets to map features → best model.  
+4. **Adaptive Index** – stitches everything into a single API, serving point/range lookups while logging performance.
+
+Target metrics:
+
+- **15–25% lower lookup latency** vs. static learned indexes  
+- **>85% selection accuracy** for the meta-learner  
+- **<15% memory overhead**
+
+---
+
+## Implementation Plan (High-Level)
+
+- **Weeks 1–2:** Literature review, environment setup, SOSD dataset download, baseline RMI + B-Tree.  
+- **Weeks 3–4:** Feature engineering, segmentation strategies, build the model zoo.  
+- **Weeks 5–6:** Train the meta-learner, integrate per-segment selection.  
+- **Weeks 7–8:** Benchmark, profile, optimize.  
+- **Weeks 9–10:** Validation, documentation, final packaging for reproducibility.
+
+I’ve kept performance profiling, automated benchmarks, and risk analysis in scope so that the result is production-friendly, not just a research prototype.
+
+---
+
+## Why This Excites Me
+
+This project isn’t just about one course credit. It’s about exploring the *future of indexing* — systems that adapt to their data automatically. For someone who enjoys backend performance tuning and also likes machine learning, meta-learning for databases feels like the perfect playground.
+
+I’ll be documenting progress here as I iterate on the design, benchmarks, and (hopefully) publishable insights.
+
+---
+
+*Thanks for reading! If you’ve worked with learned indexes or meta-learning in databases, I’d love to hear your thoughts.*

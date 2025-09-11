@@ -1,7 +1,6 @@
 // src/components/MDXComponents.tsx
 import React, { ComponentProps } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 interface CodeBlockProps {
   children: React.ReactNode;

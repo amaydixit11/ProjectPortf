@@ -2,11 +2,12 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import { getPostBySlug, getAllPostSlugs, formatDate } from '@/utils/blog';
+import { formatDate } from '@/utils/blog';
 import { MDXComponents } from '@/components/MDXComponents';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, Clock, Tag } from 'lucide-react';
 import { Metadata } from 'next';
+import { getAllPostSlugs, getPostBySlug } from '@/lib/blog';
 
 interface BlogPostPageProps {
   params: {
@@ -44,10 +45,10 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <div className="py-8 min-h-screen mt-20">
+    <div className="py-8 min-h-screen mt-10">
       <div className="max-w-4xl mx-auto">
         {/* Back Button */}
-        <div className="mb-6">
+        <div className="mb-2">
           <Link
             href="/blog"
             className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
@@ -58,9 +59,9 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
 
         {/* Article Header */}
-        <article className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-8">
+        <article className="bg-white dark:bg-gray-900 rounded-lg p-6">
           <header className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4 overflow-hidden">
               {post.title}
             </h1>
             
