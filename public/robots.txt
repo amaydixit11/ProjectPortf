@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://amaydixit11.vercel.app
+
+# Sitemaps
+Sitemap: https://amaydixit11.vercel.app/sitemap.xml
