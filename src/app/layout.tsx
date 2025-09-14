@@ -9,8 +9,8 @@ import { ThemeProvider } from "next-themes";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Amay Dixit - Backend Engineer & Open Source Developer | IIT Bhilai Student",
-  description: "Amay Dixit is a Backend Engineer and Open Source Developer studying Computer Science at IIT Bhilai. Specializing in system design, scalable applications, and contributing to MOSIP and FOSSEE projects. Experienced in Go, TypeScript, React, Node.js, and database systems.",
+  title: "Amay Dixit - Open Source Developer | Student",
+  description: "Amay Dixit is an Open Source Developer studying Computer Science at IIT Bhilai. Specializing in system design, scalable applications, and contributing to MOSIP and FOSSEE projects. Experienced in Go, TypeScript, React, Node.js, and database systems.",
   keywords: [
     "Amay Dixit",
     "Backend Engineer", 
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Amay Dixit - Backend Engineer & Open Source Developer",
+    title: "Amay Dixit - Open Source Developer",
     description: "Backend Engineer specializing in system design and scalable applications. Open Source contributor to MOSIP and FOSSEE.",
     site: "@AmayDixit11",
     creator: "@AmayDixit11",
@@ -85,9 +85,6 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/manifest.json",
-  verification: {
-    google: "your-google-verification-code", // Add your Google Search Console verification
-  },
 };
 
 export default function RootLayout({
