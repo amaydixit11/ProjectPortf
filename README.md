@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Amay Dixit - Personal Portfolio
 
-## Getting Started
+My personal portfolio website showcasing my journey through development
 
-First, run the development server:
+## 🚀 Live Site
+
+**[amaydixit11.vercel.app](https://amaydixit11.vercel.app)**
+
+## 🛠️ Built With
+
+- **Next.js 15** with App Router
+- **TypeScript** for type safety
+- **Tailwind CSS** for styling
+- **MDX** for blog content
+- **Gray Matter** for frontmatter parsing
+- **Vercel** for deployment
+
+## ✨ Features
+
+- **Responsive Design** - Optimized for all devices
+- **Dark/Light Mode** - System preference aware
+- **Blog System** - MDX-powered with reading time calculation
+- **Project Showcase** - Dynamic project filtering and categorization  
+- **Interactive Widgets** - Real-time status, location, and activity updates
+- **SEO Optimized** - Meta tags, structured data, and sitemap
+- **Performance Focused** - Optimized images and lazy loading
+
+## 🏗️ Key Sections
+
+### `/` - Home
+Hero section with quick introduction and call-to-action buttons
+
+### `/about` - About Me
+Detailed background, journey, and interactive widgets showing:
+- Current location and time
+- Live coding status
+- Recent achievements
+- Technologies I'm learning
+- Quick social links
+
+### `/projects` - Projects
+Showcase of my work including:
+- Meta-Learning Adaptive Indexes (ML research)
+- AcadMap (University resource platform)
+- BitTorrent Client (Systems programming)
+- And more...
+
+### `/blog` - Blog
+Technical articles about:
+- Backend systems and architecture
+- Open source contributions
+- Learning experiences
+- Research insights
+
+### `/resume` - Resume
+Professional timeline with:
+- Experience at MOSIP and FOSSEE
+- OpenLake leadership role
+- Technical skills and achievements
+- Education and certifications
+
+## 🧪 Local Development
 
 ```bash
+# Clone the repository
+git clone https://github.com/amaydixit11/projectportf.git
+cd projectportf
+
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📝 Content Management
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Blog posts are written in MDX format with frontmatter:
+- Automatic reading time calculation
+- Tag and category filtering
+- SEO meta generation
+- Social sharing optimization
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌐 Deployment
 
-## Learn More
+Deployed on Vercel with:
+- **Automatic Deployments** from main branch
+- **Preview Deployments** for PRs
+- **Edge Functions** for optimal performance
+- **Analytics** and monitoring
 
-To learn more about Next.js, take a look at the following resources:
+## 📧 Contact
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Email**: [amayd@iitbhilai.ac.in](mailto:amayd@iitbhilai.ac.in)
+- **GitHub**: [@amaydixit11](https://github.com/amaydixit11)
+- **LinkedIn**: [amay-dixit-462113284](https://linkedin.com/in/amay-dixit-462113284)
+- **X**: [@AmayDixit11](https://x.com/AmayDixit11)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with ❤️ by Amay Dixit - Open Source Enthusiast at IIT Bhilai
