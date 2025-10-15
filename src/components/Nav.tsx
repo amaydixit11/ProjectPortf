@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Info, FileText, Briefcase, BookOpen } from "lucide-react";
+import { Home, Info, FileText, Briefcase, BookOpen, Box } from "lucide-react";
 
 export default function Nav() {
   const pathname = usePathname();
@@ -12,6 +12,7 @@ export default function Nav() {
     { href: "/blog", icon: FileText, label: "Blog" },
     { href: "/projects", icon: Briefcase, label: "Projects" },
     { href: "/resume", icon: BookOpen, label: "Resume" },
+    { href: "/pixels", icon: Box, label: "Life In Pixels" },
   ];
 
   return (
