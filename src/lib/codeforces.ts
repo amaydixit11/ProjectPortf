@@ -1,11 +1,12 @@
 import { CodeforcesApiResponse, CodeforcesSubmission, HeatMapValue } from "@/types/codeforces";
+import { DataSourceConfig } from "@/types/pixels";
 
 const CODEFORCES_API_BASE = "https://codeforces.com/api";
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 const REQUEST_DELAY = 2000; // 2 seconds between requests
 
 let lastRequestTime = 0;
-const cache = new Map<string, { data: any; timestamp: number }>();
+const cache = new Map<string, { data: unknown; timestamp: number }>();
 
 async function waitForRateLimit(): Promise<void> {
   const now = Date.now();
@@ -33,7 +34,7 @@ export async function fetchCodeforcesApi<T>(
   // Check cache
   const cached = cache.get(url);
   if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-    return cached.data;
+    return cached.data as T;
   }
   
   // Rate limiting
@@ -71,17 +72,43 @@ export async function getUserSubmissions(
     count,
   });
 }
+export interface CodeforcesUser {
+  handle: string;
+  rating?: number;
+  maxRating?: number;
+  rank?: string;
+  maxRank?: string;
+  firstName?: string;
+  lastName?: string;
+  country?: string;
+  organization?: string;
+  contribution?: number;
+  friendOfCount?: number;
+  titlePhoto?: string;
+  avatar?: string;
+}
 
-export async function getUserInfo(handle: string) {
-  const users = await fetchCodeforcesApi<any[]>("user.info", {
+export interface CodeforcesRatingChange {
+  contestId: number;
+  contestName: string;
+  handle: string;
+  rank: number;
+  ratingUpdateTimeSeconds: number;
+  oldRating: number;
+  newRating: number;
+}
+
+export async function getUserInfo(handle: string): Promise<CodeforcesUser> {
+  const users = await fetchCodeforcesApi<CodeforcesUser[]>("user.info", {
     handles: handle,
   });
   return users[0];
 }
 
-export async function getUserRating(handle: string) {
-  return fetchCodeforcesApi<any[]>("user.rating", { handle });
+export async function getUserRating(handle: string): Promise<CodeforcesRatingChange[]> {
+  return fetchCodeforcesApi<CodeforcesRatingChange[]>("user.rating", { handle });
 }
+
 
 export function processSubmissionsToHeatmap(
   submissions: CodeforcesSubmission[]
@@ -221,16 +248,6 @@ function generateFallbackData(): HeatMapValue[] {
 }
 
 import { Code } from "lucide-react";
-
-export interface DataSourceConfig {
-  id: string;
-  name: string;
-  description: string;
-  icon: any;
-  colors: string[];
-  unit: string;
-  dataProvider: () => Promise<HeatMapValue[]>;
-}
 
 export function createCodeforcesDataSource(
   handle: string

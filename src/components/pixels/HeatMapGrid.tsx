@@ -44,7 +44,7 @@ export const HeatMapGrid: React.FC<HeatMapGridProps> = ({ dataSource }) => {
   // endDate.setMonth(11); // December (0-indexed)
   // endDate.setDate(31);
 
-  const startDate = new Date(endDate.getTime() - 285 * 24 * 60 * 60 * 1000);
+  const startDate = new Date(endDate.getTime() - 280 * 24 * 60 * 60 * 1000);
 
   // startDate.setFullYear(startDate.getFullYear());
   // startDate.setMonth(0); // January

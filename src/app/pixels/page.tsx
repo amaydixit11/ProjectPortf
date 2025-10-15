@@ -4,16 +4,23 @@ import React, { useState } from "react";
 import { HeatMapGrid } from "@/components/pixels/HeatMapGrid";
 import { DataSourceSelector } from "@/components/pixels/DataSourceSelector";
 import { dataSourceRegistry } from "@/lib/pixels/dataSourceRegistry";
-import { Activity, Calendar, Code, Trophy, Target } from "lucide-react";
+import {
+  Activity,
+  Calendar,
+  TrendingUp,
+  Zap,
+  GitBranch,
+  Code2,
+} from "lucide-react";
 
-const Life: React.FC = () => {
+const Life = () => {
   const [activeSource, setActiveSource] = useState("github");
   const dataSources = dataSourceRegistry.getAllSources();
   const currentSource = dataSourceRegistry.getSource(activeSource);
 
   return (
-    <div className="py-8 min-h-screen mt-20">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+    <div className="py-8 min-h-screen mt-20 px-4 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-8">
           {/* Header */}
@@ -23,7 +30,8 @@ const Life: React.FC = () => {
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-400">
               Visualizing my daily activities and contributions across different
-              platforms. Each pixel represents a day of work, learning, and growth.
+              platforms. Each pixel represents a day of work, learning, and
+              growth.
             </p>
           </div>
 
@@ -55,143 +63,91 @@ const Life: React.FC = () => {
               About This Visualization
             </h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              This page tracks my daily activities across various platforms. Each
-              heatmap shows my consistency and dedication in different areas - from
-              coding contributions to competitive programming practice. The darker
-              the color, the more active I was on that particular day.
+              This page tracks my daily activities across various platforms.
+              Each heatmap shows my consistency and dedication in different
+              areas - from coding contributions to competitive programming
+              practice. The darker the color, the more active I was on that
+              particular day.
             </p>
           </div>
         </div>
 
         {/* Sidebar Widgets */}
         <div className="space-y-6">
-          <StatsWidget />
-          <StreaksWidget />
-          <GoalsWidget />
+          <ConsistencyWidget />
+          <PhilosophyCard />
         </div>
       </div>
     </div>
   );
 };
-
-// Stats Widget
-const StatsWidget: React.FC = () => {
+// Consistency Widget
+const ConsistencyWidget = () => {
   return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6">
-      <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-        <Activity size={18} />
-        Overall Stats
-      </h3>
-      <div className="space-y-3">
-        <div className="flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">Total Days Tracked</span>
-          <span className="font-medium text-gray-900 dark:text-gray-100">365</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">Active Days</span>
-          <span className="font-medium text-gray-900 dark:text-gray-100">287</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">Current Streak</span>
-          <span className="font-medium text-gray-900 dark:text-gray-100">15 days</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">Longest Streak</span>
-          <span className="font-medium text-gray-900 dark:text-gray-100">42 days</span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Streaks Widget
-const StreaksWidget: React.FC = () => {
-  const streaks = [
-    { platform: "GitHub", current: 15, longest: 42, color: "text-purple-500" },
-    { platform: "Codeforces", current: 7, longest: 28, color: "text-blue-500" },
-    { platform: "GeeksforGeeks", current: 12, longest: 35, color: "text-green-500" },
-  ];
-
-  return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6">
-      <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-        <Trophy size={18} />
-        Active Streaks
-      </h3>
+    <div className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
       <div className="space-y-4">
-        {streaks.map((streak, index) => (
-          <div key={index} className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className={`text-sm font-medium ${streak.color}`}>
-                {streak.platform}
-              </span>
-              <span className="text-xs text-gray-500 dark:text-gray-500">
-                Best: {streak.longest} days
-              </span>
-            </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-              <div
-                className={`h-2 rounded-full ${streak.color.replace('text-', 'bg-')}`}
-                style={{ width: `${(streak.current / streak.longest) * 100}%` }}
-              />
-            </div>
-            <div className="text-xs text-gray-600 dark:text-gray-400">
-              {streak.current} days current streak
-            </div>
+        <div className="flex items-center gap-2">
+          <Zap size={20} className="text-orange-600 dark:text-orange-400" />
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+            Consistency Matters
+          </h3>
+        </div>
+        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+          The goal isn{`&apos`}t perfection—it{`&apos`}s showing up. Every commit, every problem
+          solved, every day of practice adds up over time.
+        </p>
+        <div className="flex items-center gap-2 pt-2">
+          <div className="flex-1 bg-orange-200 dark:bg-orange-900 rounded-full h-1.5">
+            <div className="bg-orange-500 h-1.5 rounded-full w-3/4 animate-pulse" />
           </div>
-        ))}
+          <TrendingUp
+            size={16}
+            className="text-orange-600 dark:text-orange-400"
+          />
+        </div>
       </div>
     </div>
   );
 };
 
-// Goals Widget
-const GoalsWidget: React.FC = () => {
+// Philosophy Card
+const PhilosophyCard = () => {
   return (
     <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6">
-      <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-        <Target size={18} />
-        2025 Goals
-      </h3>
       <div className="space-y-4">
-        <div>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-700 dark:text-gray-300">
-              GitHub Contributions
-            </span>
-            <span className="text-xs text-gray-500 dark:text-gray-500">
-              847 / 1000
-            </span>
-          </div>
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-            <div className="bg-green-500 h-2 rounded-full" style={{ width: "84.7%" }} />
-          </div>
+        <div className="flex items-center gap-2">
+          <Activity size={20} className="text-green-600 dark:text-green-400" />
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+            Why Track? 
+          </h3>
         </div>
-        <div>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-700 dark:text-gray-300">
-              Codeforces Problems
-            </span>
-            <span className="text-xs text-gray-500 dark:text-gray-500">
-              156 / 200
-            </span>
-          </div>
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-            <div className="bg-blue-500 h-2 rounded-full" style={{ width: "78%" }} />
-          </div>
+
+        <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+          <p>
+            <span className="font-medium text-gray-900 dark:text-gray-100">
+              Visibility:
+            </span>{" "}
+            You cant improve what you cant see.
+          </p>
+          <p>
+            <span className="font-medium text-gray-900 dark:text-gray-100">
+              Motivation:
+            </span>{" "}
+            Watching progress—no matter how small—keeps the fire going.
+          </p>
+          <p>
+            <span className="font-medium text-gray-900 dark:text-gray-100">
+              Reflection:
+            </span>{" "}
+            Tracking turns experience into insight by revealing patterns over
+            time.
+          </p>
         </div>
-        <div>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm text-gray-700 dark:text-gray-300">
-              Active Days
-            </span>
-            <span className="text-xs text-gray-500 dark:text-gray-500">
-              287 / 365
-            </span>
-          </div>
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-            <div className="bg-purple-500 h-2 rounded-full" style={{ width: "78.6%" }} />
-          </div>
+
+        <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+          <p className="text-xs text-gray-500 dark:text-gray-500 italic">
+            {`&quot;`}Small daily improvements compound into remarkable results.{`&quot;`}
+          </p>
         </div>
       </div>
     </div>
