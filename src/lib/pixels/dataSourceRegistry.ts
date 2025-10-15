@@ -11,9 +11,9 @@ class DataSourceRegistry {
     // Register all data sources
     this.register(githubDataSource);
     this.register(codeforcesDataSource);
-    this.register(geeksforgeeksDataSource);
-    this.register(leetcodeDataSource);
-    this.register(duolingoDataSource);
+    // this.register(geeksforgeeksDataSource);
+    // this.register(leetcodeDataSource);
+    // this.register(duolingoDataSource);
   }
 
   register(config: DataSourceConfig): void {
