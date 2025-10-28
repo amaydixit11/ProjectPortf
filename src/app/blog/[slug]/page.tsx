@@ -119,7 +119,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 {post.tags.map((tag, index) => (
                   <Link
                     key={index}
-                    href={`/blog/tag/${tag.toLowerCase()}`}
+                    // href={`/blog/tag/${tag.toLowerCase()}`}
+                    href={`/blog`}
                     className="text-sm px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                   >
                     {tag}
@@ -163,10 +164,10 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         {/* Right Sidebar - Widgets */}
         <div className="space-y-4">
           <QuickActionsWidget title={post.title} slug={params.slug} />
-          <TableOfContentsWidget />
-          <PopularPostsWidget />
+          <TableOfContentsWidget slug={params.slug} />
+          {/* <PopularPostsWidget /> */}
           <TechStackWidget />
-          <RelatedPostsWidget />
+          {/* <RelatedPostsWidget /> */}
           <NewsletterWidget />
         </div>
       </div>

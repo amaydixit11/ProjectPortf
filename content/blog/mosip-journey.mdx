@@ -1,0 +1,303 @@
+---
+title: "My Journey Contributing to MOSIP: Building Digital Identity Infrastructure for Millions"
+excerpt: "From implementing credential revocation to building ISO-compliant mDoc support—a year-long journey of contributing to India's digital public infrastructure through Code for GovTech."
+date: "2025-10-28"
+category: "Open Source"
+tags: ["MOSIP", "Open Source", "Digital Identity", "Verifiable Credentials", "C4GT"]
+author: "Amay Dixit"
+published: true
+coverImage: "/blog/mosip-journey/thumbnail.png"
+---
+
+## Introduction
+
+Over the past year, I've had the privilege of contributing to one of India's most impactful open-source projects—MOSIP (Modular Open Source Identity Platform)—through Code for GovTech (C4GT). What began as a single sprint selection evolved into a year-long journey of building critical features for digital public infrastructure, earning recognition, and continuing to shape the future of verifiable credentials in India.
+
+This is my story of technical challenges, learning curves, and the deep satisfaction of building technology that impacts millions of lives.
+
+---
+
+## The Beginning: Getting Selected for C4GT
+
+My journey started in early 2025 when I was selected for the **[C4GT Community Campaign Sprint 2](https://www.linkedin.com/posts/amay-dixit-462113284_sprint-2-activity-7300543770989617152-QCig?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAEUSc8oBp5_RosAkzy2WPbjGcU26NfqqcIM)**. Out of numerous applicants nationwide, I was one of just four individuals chosen to work on transformative projects. I was thrilled to be assigned to MOSIP, specifically to implement a **Revocation Feature for Verifiable Credentials** in Inji Certify.
+
+Code for GovTech is India's first active open-source community focused on building Digital Public Goods (DPGs) that create population-scale social impact. Being part of this initiative meant my work could genuinely transform how citizens interact with government services.
+
+The project came with a bounty of **₹40,000**, but more importantly, it offered the opportunity to work on technology that matters.
+
+---
+
+## First Challenge: Building Credential Revocation
+
+### Why Revocation Matters
+
+Imagine you're issued a digital driver's license. What happens if it gets suspended? Or if you report it as compromised? The system needs a way to invalidate credentials without forcing everyone to constantly check with the issuer. That's where revocation comes in.
+
+The challenge was implementing a **W3C-compliant revocation mechanism** that could:
+- Handle millions of credentials efficiently
+- Protect user privacy (verifiers shouldn't know *which* credential is being checked)
+- Maintain cryptographic integrity
+- Work seamlessly with the existing Inji Stack
+
+### The Technical Approach
+
+I implemented a privacy-preserving solution using the **BitString Status List** specification. Here's how it works:
+
+Instead of maintaining individual revocation records, the system uses a clever compressed bitstring where each credential gets a unique index position. Think of it like a massive array where:
+- 0 = valid credential
+- 1 = revoked credential
+
+When a verifier needs to check if a credential is valid, they:
+1. Look at the credential's statusListIndex (say, position 94567)
+2. Fetch the public status list from the issuer
+3. Check the bit at that position
+4. All without revealing which specific credential they're verifying
+
+This approach is elegant because it balances three critical needs: **efficiency** (one bitstring serves millions of credentials), **privacy** (no direct issuer-verifier communication), and **integrity** (cryptographically signed status lists).
+
+### Building the System
+
+I designed a comprehensive database schema to track credential lifecycles and developed three core APIs:
+
+1. **Fetch API** - Retrieves credential metadata for revocation checks
+2. **Revocation API** - Updates credential status and the bitstring atomically
+3. **Status List API** - Serves the compressed bitstring to verifiers
+
+The trickiest part was handling concurrent updates. When multiple credentials get revoked simultaneously, the system needs to ensure the bitstring remains consistent and that cryptographic proofs reference the correct version. I solved this using optimistic concurrency control with snapshot-based proof generation.
+
+After months of development, the feature was complete and production-ready. My pull requests ([#330](https://github.com/mosip/inji-certify/pull/330) and [#363](https://github.com/mosip/inji-certify/pull/363)) were merged, and suddenly my code was part of infrastructure serving potentially millions of users.
+
+---
+
+## Recognition and the Next Challenge
+
+### Selected Again: DMP 2025
+
+Shortly after completing the revocation feature, I applied for the **Code for GovTech Dedicated Mentoring Program (DMP) 2025**—and got selected again!
+
+This time, I was chosen from over **4,200 unique applicants** across India for a 3-month dedicated mentorship program with a stipend of **₹1 Lakh**. The selection letter emphasized how my contributions were "part of something bigger than any single repository"—contributing to India's entire open-source ecosystem.
+
+<img src="/blog/mosip-journey/appreciation-letter.png" alt="C4GT DMP 2025 Appreciation Letter" className="rounded-lg shadow-lg my-8" />
+
+### The mDoc Challenge: Going Global
+
+My new assignment was even more ambitious: implementing **ISO/IEC 18013-5 mDoc (Mobile Document) support** for verifiable credentials.
+
+If you're wondering what mDocs are—they're the international standard for mobile driver's licenses and identity documents. They're designed for global interoperability, meaning an mDoc issued in India could be verified anywhere in the world that supports the standard.
+
+This was critical for India's digital identity ecosystem to participate on the global stage.
+
+---
+
+## Building mDoc Support: Three Months of Deep Work
+
+### Understanding the Challenge
+
+The mDoc format is fundamentally different from traditional verifiable credentials. Instead of JSON-LD, it uses:
+
+- **CBOR** (Concise Binary Object Representation) - A compact binary format
+- **COSE** (CBOR Object Signing and Encryption) - For cryptographic signatures
+- **ISO namespaces** - Standardized data element structures like `org.iso.18013.5.1` for driver's licenses
+
+The real power of mDocs lies in **selective disclosure**. Each data element (name, birth date, address, etc.) gets its own cryptographic digest. When presenting an mDoc, you can prove specific attributes without revealing everything. Need to prove you're over 21? Show just your birth date. Verifying identity for a hotel? Share your name and photo, nothing more.
+
+### The Technical Journey
+
+I spent three months implementing this feature from the ground up. The journey involved:
+
+**Understanding Standards**: Deep diving into ISO 18013-5 (the mDoc structure standard) and ISO 18013-7 (the CBOR transport format). These specifications are dense, but understanding them was crucial.
+
+**Mapping Data**: Building a flexible system to map backend data to ISO-standardized fields. For example, our internal `user.lastName` becomes `family_name` in the `org.iso.18013.5.1` namespace.
+
+**Digest Calculation**: For each data element, I implemented:
+1. CBOR serialization with a 24-byte random salt (for privacy)
+2. SHA-256 hash calculation
+3. Storage in the Mobile Security Object (MSO)
+
+**MSO Construction**: The MSO is like a table of contents for an mDoc. It contains the digest of every data element, validity information, and the wallet's public key—all signed by the issuer.
+
+**CBOR Encoding**: Implementing proper CBOR encoding with canonical rules, specific tags (like Tag 24 for wrapped items and Tag 1004 for dates), and correct binary representation.
+
+**OpenID4VCI Integration**: Ensuring the system seamlessly handles credential requests with `format: "mso_mdoc"` through the OpenID for Verifiable Credential Issuance flow.
+
+### The System Architecture
+
+Here's how the entire mDoc issuance flow works in Inji Certify:
+
+<img src="/blog/mosip-journey/mdoc-flow.png" alt="mDoc Credential Issuance Flow Diagram" className="rounded-lg shadow-lg my-8" />
+
+The diagram shows the complete journey from when a client app requests an mDoc credential to the final COSE-signed CBOR-encoded credential being returned. The key innovation is how the system:
+
+1. Fetches raw business data from the Data Provider Plugin
+2. Processes it through Velocity templates to create the unsigned mDoc structure
+3. Performs the COSE signing process with random salts and digest calculation
+4. Encodes everything to CBOR with proper tags
+5. Returns a standards-compliant mDoc credential
+
+### Overcoming Complexity
+
+The most challenging aspect was getting CBOR encoding exactly right. CBOR has specific requirements for deterministic encoding, tag usage, and binary structure. A single byte out of place could make the entire credential invalid.
+
+I worked closely with the keymanager library to implement COSE signing, ensuring the cryptographic signatures met ISO standards. Testing involved validating against diagnostic notation, verifying digest calculations, and confirming the final credentials could be parsed by standard-compliant verifiers.
+
+After three months, the feature was complete. My pull requests ([#412](https://github.com/mosip/inji-certify/pull/412) and [#444](https://github.com/mosip/inji-certify/pull/444)) added full ISO/IEC 18013-5 compliance to Inji Certify, with support for multiple namespaces, selective disclosure, and production-grade mDoc issuance.
+
+---
+
+## Continuing the Journey: Pre-Authorized Code Flow
+
+### Third Time's the Charm
+
+After successfully completing the DMP program, MOSIP offered me another project: implementing the **Pre-Authorized Code Flow** for OpenID4VCI.
+
+This flow enables seamless credential issuance in scenarios where authorization is pre-granted—perfect for use cases like employee onboarding, student enrollment, or government credential distribution.
+
+### How It Works
+
+Imagine this scenario: A new employee joins a company.
+
+1. HR verifies the employee's documents and approves them
+2. The employee receives an email with a QR code
+3. They scan it with their digital wallet
+4. They receive an SMS with a transaction code for verification
+5. They enter the code, and boom—their employee credential is automatically issued
+
+No complex authentication flows, no manual intervention. Just smooth, automated credential issuance.
+
+### What I'm Building
+
+The implementation involves four key components:
+
+1. **Generating pre-authorized codes** and credential offers
+2. **Serving credential offer JSON** with issuer metadata
+3. **Token endpoint implementation** for code exchange
+4. **Multiple authorization server support** for flexible deployments
+
+The project is currently in progress ([PR #483](https://github.com/mosip/inji-certify/pull/483) under review), with expected completion in two months.
+
+---
+
+## The Rewards: More Than Just Money
+
+### Financial Impact
+
+- **Sprint 2 (Revocation Feature):** ₹40,000
+- **DMP 2025 (mDoc Support):** ₹1,00,000  
+- **Current Project (Pre-Auth Flow):** Ongoing
+- **Total Earned:** ₹1,40,000+
+
+But honestly? The money, while significant, isn't the most valuable part.
+
+### The Recognition Package
+
+C4GT sent an incredible recognition package that meant more to me than any paycheck:
+
+<img src="/blog/mosip-journey/goodies-swag.png" alt="C4GT Recognition Package with Swag" className="rounded-lg shadow-lg my-8" />
+
+- Custom C4GT swag kit with wireless headphones
+- Developer merchandise and sticker pack
+- A personalized appreciation letter acknowledging being selected from 4,200+ applicants
+
+The letter's words stuck with me: "Your contributions are part of something bigger than any single repository—you're contributing to the larger open-source ecosystem."
+
+That's the real reward.
+
+---
+
+## What I've Learned
+
+### Technical Growth
+
+Through these projects, I've gained deep expertise in:
+
+- **Standards**: W3C Verifiable Credentials, BitString Status Lists, ISO/IEC 18013-5/7, OpenID4VCI, COSE
+- **Technologies**: CBOR encoding, cryptographic operations, Spring Boot backend development, Velocity templating
+- **Engineering Practices**: Production-grade code, comprehensive testing, technical documentation, code review
+
+### Beyond Code
+
+**Real-World Impact**: My code isn't sitting in a repository gathering dust. It's infrastructure for millions of users relying on MOSIP for digital identity. It's government credentialing systems across India and beyond. It's international interoperability that puts India on the global digital identity stage.
+
+**The Power of Standards**: Understanding why international standards exist and how to implement them correctly isn't just technical knowledge—it's enabling global collaboration and interoperability.
+
+**Privacy Matters**: Building systems that protect user privacy while maintaining functionality requires deep thought and careful design. It can't be bolted on later.
+
+**Documentation is Love**: Clear documentation and communication aren't overhead—they're essential for collaboration and long-term maintainability.
+
+---
+
+## Advice for Aspiring Contributors
+
+If you're interested in contributing to C4GT or similar programs, here's what I've learned:
+
+### Start by Understanding
+
+Don't just dive into code. Spend time understanding the problem, the users, and the broader context. Read specifications. Ask questions. Build a mental model before building features.
+
+### Quality Over Speed
+
+Production code for millions of users needs extensive error handling, edge case management, and thorough testing. Take the time to get it right.
+
+### Communicate Proactively
+
+Regular updates to mentors, asking for feedback early, sharing challenges before they become blockers—this makes collaboration smooth and keeps projects on track.
+
+### Think About Impact
+
+Always remember: someone will use what you build. Consider their experience, their privacy, their security. Build with empathy.
+
+### Document Everything
+
+Future you (and everyone else) will thank present you for clear documentation, informative commit messages, and thoughtful code comments.
+
+---
+
+## What's Next
+
+In the immediate future, I'll complete the Pre-Authorized Code Flow implementation and continue contributing to MOSIP's credentialing ecosystem.
+
+Long-term, I want to deepen my expertise in digital identity and verifiable credentials. I'm interested in contributing to W3C standards development and mentoring new contributors to C4GT and MOSIP.
+
+There's so much work to be done in building Digital Public Goods, and I'm excited to continue being part of it.
+
+---
+
+## Final Thoughts
+
+A year ago, I was just another developer applying to C4GT, hoping to contribute to something meaningful. Today, I've built production features serving millions, contributed to international standards implementation, and become part of India's open-source DPG ecosystem.
+
+The journey has been challenging—understanding complex specifications, implementing cryptographic systems correctly, ensuring production-grade quality. But it's also been incredibly rewarding.
+
+If you're passionate about technology that matters, I encourage you to explore C4GT and projects like MOSIP. The work is hard, but knowing your code helps improve governance and citizen services at population scale makes every challenge worthwhile.
+
+Building digital public infrastructure isn't just about writing code—it's about building the future.
+
+---
+
+## Acknowledgments
+
+Huge thanks to:
+
+- **Code for GovTech** for creating this incredible platform
+- **MOSIP Team**—especially my mentors who guided me through complex technical challenges
+- **The C4GT Community** for support and collaboration  
+- **My fellow contributors** who inspire me with their work
+
+---
+
+## Connect & Learn More
+
+**GitHub Issues I've Worked On:**
+- [Revocation Feature #189](https://github.com/mosip/inji-certify/issues/189)
+- [mDoc Support #279](https://github.com/mosip/inji-certify/issues/279)
+- [Pre-Authorized Code Flow #453](https://github.com/mosip/inji-certify/issues/453)
+
+**My Merged Pull Requests:**
+- [PR #330](https://github.com/mosip/inji-certify/pull/330) - StatusListCredential implementation
+- [PR #363](https://github.com/mosip/inji-certify/pull/363) - Revocation feature completion
+- [PR #412](https://github.com/mosip/inji-certify/pull/412) - mDoc template processing
+- [PR #444](https://github.com/mosip/inji-certify/pull/444) - COSE signing and CBOR encoding
+
+---
+
+*This blog chronicles my journey contributing to MOSIP through Code for GovTech from early 2025 to present—building features that impact millions and advancing India's digital identity infrastructure.*

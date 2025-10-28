@@ -92,7 +92,7 @@ export const HeatMapGrid: React.FC<HeatMapGridProps> = ({ dataSource }) => {
                 fontFamily: "system-ui, -apple-system, sans-serif",
               }}
               rectProps={{
-                rx: 2,
+                rx: 2.5,
               }}
               rectRender={(props, data) => {
                 const isSelected = selectedDate === data.date;

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { formatDate } from "@/utils/blog";
 import {
@@ -19,15 +19,133 @@ import Link from "next/link";
 import React from "react";
 
 // Table of Contents Widget
-export const TableOfContentsWidget: React.FC = () => {
-  // This would typically be generated from the post content
-  const tocItems = [
-    { id: "introduction", title: "Introduction", level: 1 },
-    { id: "main-concept", title: "Main Concept", level: 1 },
-    { id: "implementation", title: "Implementation", level: 2 },
-    { id: "best-practices", title: "Best Practices", level: 2 },
-    { id: "conclusion", title: "Conclusion", level: 1 },
-  ];
+export const TableOfContentsWidget: React.FC<{ slug: string }> = ({ slug }) => {
+  const tocItems = {
+    "meta-learning": [
+      { id: "introduction", title: "Introduction", level: 1 },
+      {
+        id: "why-learned-indexes-need-help",
+        title: "Why Learned Indexes Need Help",
+        level: 1,
+      },
+      {
+        id: "the-meta-learning-idea",
+        title: "The Meta-Learning Idea",
+        level: 1,
+      },
+      { id: "what-ill-be-building", title: "What I'll Be Building", level: 1 },
+      {
+        id: "implementation-plan-high-level",
+        title: "Implementation Plan (High-Level)",
+        level: 1,
+      },
+      { id: "why-this-excites-me", title: "Why This Excites Me", level: 1 },
+    ],
+    "mosip-journey": [
+      { id: "introduction", title: "Introduction", level: 1 },
+      {
+        id: "the-beginning-getting-selected-for-c4gt",
+        title: "The Beginning: Getting Selected for C4GT",
+        level: 1,
+      },
+      {
+        id: "first-challenge-building-credential-revocation",
+        title: "First Challenge: Building Credential Revocation",
+        level: 1,
+      },
+      {
+        id: "why-revocation-matters",
+        title: "Why Revocation Matters",
+        level: 2,
+      },
+      {
+        id: "the-technical-approach",
+        title: "The Technical Approach",
+        level: 2,
+      },
+      { id: "building-the-system", title: "Building the System", level: 2 },
+      {
+        id: "recognition-and-the-next-challenge",
+        title: "Recognition and the Next Challenge",
+        level: 1,
+      },
+      {
+        id: "selected-again-dmp-2025",
+        title: "Selected Again: DMP 2025",
+        level: 2,
+      },
+      {
+        id: "the-mdoc-challenge-going-global",
+        title: "The mDoc Challenge: Going Global",
+        level: 2,
+      },
+      {
+        id: "building-mdoc-support-three-months-of-deep-work",
+        title: "Building mDoc Support: Three Months of Deep Work",
+        level: 1,
+      },
+      {
+        id: "understanding-the-challenge",
+        title: "Understanding the Challenge",
+        level: 2,
+      },
+      { id: "the-technical-journey", title: "The Technical Journey", level: 2 },
+      {
+        id: "the-system-architecture",
+        title: "The System Architecture",
+        level: 2,
+      },
+      { id: "overcoming-complexity", title: "Overcoming Complexity", level: 2 },
+      {
+        id: "continuing-the-journey-pre-authorized-code-flow",
+        title: "Continuing the Journey: Pre-Authorized Code Flow",
+        level: 1,
+      },
+      {
+        id: "third-times-the-charm",
+        title: "Third Time's the Charm",
+        level: 2,
+      },
+      { id: "how-it-works", title: "How It Works", level: 2 },
+      { id: "what-im-building", title: "What I'm Building", level: 2 },
+      {
+        id: "the-rewards-more-than-just-money",
+        title: "The Rewards: More Than Just Money",
+        level: 1,
+      },
+      { id: "financial-impact", title: "Financial Impact", level: 2 },
+      {
+        id: "the-recognition-package",
+        title: "The Recognition Package",
+        level: 2,
+      },
+      { id: "what-ive-learned", title: "What I've Learned", level: 1 },
+      { id: "technical-growth", title: "Technical Growth", level: 2 },
+      { id: "beyond-code", title: "Beyond Code", level: 2 },
+      {
+        id: "advice-for-aspiring-contributors",
+        title: "Advice for Aspiring Contributors",
+        level: 1,
+      },
+      {
+        id: "start-by-understanding",
+        title: "Start by Understanding",
+        level: 2,
+      },
+      { id: "quality-over-speed", title: "Quality Over Speed", level: 2 },
+      {
+        id: "communicate-proactively",
+        title: "Communicate Proactively",
+        level: 2,
+      },
+      { id: "think-about-impact", title: "Think About Impact", level: 2 },
+      { id: "document-everything", title: "Document Everything", level: 2 },
+      { id: "whats-next", title: "What's Next", level: 1 },
+      { id: "final-thoughts", title: "Final Thoughts", level: 1 },
+      { id: "acknowledgments", title: "Acknowledgments", level: 1 },
+      { id: "connect-learn-more", title: "Connect & Learn More", level: 1 },
+    ],
+  };
 
   return (
     <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6">
@@ -36,7 +154,7 @@ export const TableOfContentsWidget: React.FC = () => {
         Table of Contents
       </h3>
       <nav className="space-y-2">
-        {tocItems.map((item) => (
+        {(tocItems[slug as keyof typeof tocItems] || []).map((item) => (
           <Link
             key={item.id}
             href={`#${item.id}`}
