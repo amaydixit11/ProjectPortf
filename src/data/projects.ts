@@ -29,18 +29,18 @@ export const projectsData: ProjectsData = {
       type: "Community",
       category: "Web Applications",
     },
-    {
-      id: 3,
-      name: "ChatViz",
-      description:
-        "Privacy-focused WhatsApp chat analyzer with visualization capabilities.",
-      tags: ["Next.js", "FastAPI", "Firebase", "Python"],
-      github: "https://github.com/amaydixit11/ChatViz",
-      demo: "https://github.com/amaydixit11/ChatViz",
-      status: "In Progress",
-      type: "Analytics",
-      category: "Web Applications",
-    },
+    // {
+    //   id: 3,
+    //   name: "ChatViz",
+    //   description:
+    //     "Privacy-focused WhatsApp chat analyzer with visualization capabilities.",
+    //   tags: ["Next.js", "FastAPI", "Firebase", "Python"],
+    //   github: "https://github.com/amaydixit11/ChatViz",
+    //   demo: "https://github.com/amaydixit11/ChatViz",
+    //   status: "In Progress",
+    //   type: "Analytics",
+    //   category: "Web Applications",
+    // },
     {
       id: 4,
       name: "RateMyCourse",
@@ -75,39 +75,39 @@ export const projectsData: ProjectsData = {
     //   status: "Complete",
     //   type: "Desktop",
     // },
-    {
-      id: 8,
-      name: "amdiGit",
-      description:
-        "Custom Git implementation from Scratch.",
-      tags: ["Go", "Build-your-own", "Git"],
-      github: "https://github.com/amaydixit11/amdiGit",
-      demo: "https://github.com/amaydixit11/amdiGit",
-      status: "In Development",
-      type: "Tool",
-    },
-    {
-      id: 9,
-      name: "amdiDB",
-      description:
-        "Custom database system designed for lightweight, high-speed data storage and retrieval.",
-      tags: ["Go", "Database", "Performance", "Backend"],
-      github: "https://github.com/amaydixit11/amdidb",
-      demo: "https://github.com/amaydixit11/amdidb",
-      status: "In Development",
-      type: "Database",
-    },
-    {
-      id: 10,
-      name: "Lifelog",
-      description:
-        "Personal journaling and activity tracking platform with insights and visualizations.",
-      tags: ["Next.js", "React", "Analytics", "Visualization"],
-      github: "https://github.com/amaydixit11/lifelog",
-      demo: "https://github.com/amaydixit11/lifelog",
-      status: "In Progress",
-      type: "Personal",
-    },
+    // {
+    //   id: 8,
+    //   name: "amdiGit",
+    //   description:
+    //     "Custom Git implementation from Scratch.",
+    //   tags: ["Go", "Build-your-own", "Git"],
+    //   github: "https://github.com/amaydixit11/amdiGit",
+    //   demo: "https://github.com/amaydixit11/amdiGit",
+    //   status: "In Development",
+    //   type: "Tool",
+    // },
+    // {
+    //   id: 9,
+    //   name: "amdiDB",
+    //   description:
+    //     "Custom database system designed for lightweight, high-speed data storage and retrieval.",
+    //   tags: ["Go", "Database", "Performance", "Backend"],
+    //   github: "https://github.com/amaydixit11/amdidb",
+    //   demo: "https://github.com/amaydixit11/amdidb",
+    //   status: "In Development",
+    //   type: "Database",
+    // },
+    // {
+    //   id: 10,
+    //   name: "Lifelog",
+    //   description:
+    //     "Personal journaling and activity tracking platform with insights and visualizations.",
+    //   tags: ["Next.js", "React", "Analytics", "Visualization"],
+    //   github: "https://github.com/amaydixit11/lifelog",
+    //   demo: "https://github.com/amaydixit11/lifelog",
+    //   status: "In Progress",
+    //   type: "Personal",
+    // },
   ],
   stats: {
     totalProjects: 25,
