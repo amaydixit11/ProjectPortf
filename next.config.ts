@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 import createMDX from '@next/mdx';
-import remarkGfm from 'remark-gfm';
+// import remarkGfm from 'remark-gfm';
 
 const nextConfig: NextConfig = {
   images: {
@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
 
 const withMDX = createMDX({
   options: {
-    remarkPlugins: [remarkGfm],
+    remarkPlugins: [],
     rehypePlugins: [],
   },
 });
