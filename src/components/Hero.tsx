@@ -108,7 +108,7 @@ const Hero = () => {
       {/* Right Image */}
       <div className="flex-shrink-0">
         <Image
-          src="/amay2.JPG"
+          src="/amay2.jpeg"
           alt="Amay Dixit"
           width={300}
           height={400}
