@@ -145,6 +145,188 @@ export const TableOfContentsWidget: React.FC<{ slug: string }> = ({ slug }) => {
       { id: "acknowledgments", title: "Acknowledgments", level: 1 },
       { id: "connect-learn-more", title: "Connect & Learn More", level: 1 },
     ],
+    "kudos-architecture": [
+      {
+        id: "introduction-the-problem-with-free-likes",
+        title: "Introduction: The Problem With Free Likes",
+        level: 1,
+      },
+      {
+        id: "1-system-architecture-overview",
+        title: "1. System Architecture Overview",
+        level: 1,
+      },
+      {
+        id: "the-two-stack-design-philosophy",
+        title: "The Two-Stack Design Philosophy",
+        level: 2,
+      },
+      {
+        id: "internal-communication-grpc-over-rest",
+        title: "Internal Communication: gRPC Over REST",
+        level: 2,
+      },
+      {
+        id: "2-the-token-economy-math-driven-fairness",
+        title: "2. The Token Economy: Math-Driven Fairness",
+        level: 1,
+      },
+      {
+        id: "initial-allocation-and-inflows",
+        title: "Initial Allocation and Inflows",
+        level: 2,
+      },
+      {
+        id: "the-602020-atomic-split",
+        title: "The 60/20/20 Atomic Split",
+        level: 2,
+      },
+      {
+        id: "row-level-locking-and-race-conditions",
+        title: "Row-Level Locking and Race Conditions",
+        level: 2,
+      },
+      {
+        id: "progressive-taxation",
+        title: "Progressive Taxation",
+        level: 2,
+      },
+      {
+        id: "universal-basic-income-stipends",
+        title: "Universal Basic Income (Stipends)",
+        level: 2,
+      },
+      {
+        id: "the-unlike-window",
+        title: "The Unlike Window",
+        level: 2,
+      },
+      {
+        id: "3-the-feed-algorithm-multi-level-feedback-queues",
+        title: "3. The Feed Algorithm: Multi-Level Feedback Queues",
+        level: 1,
+      },
+      {
+        id: "mlfq-a-brief-primer",
+        title: "MLFQ: A Brief Primer",
+        level: 2,
+      },
+      {
+        id: "queue-definitions",
+        title: "Queue Definitions",
+        level: 2,
+      },
+      {
+        id: "the-visibility-score-formula",
+        title: "The Visibility Score Formula",
+        level: 2,
+      },
+      {
+        id: "token-decay-keeping-content-fresh",
+        title: "Token Decay: Keeping Content Fresh",
+        level: 2,
+      },
+      {
+        id: "4-the-database-schema-designing-for-economic-integrity",
+        title: "4. The Database Schema: Designing for Economic Integrity",
+        level: 1,
+      },
+      {
+        id: "core-entities",
+        title: "Core Entities",
+        level: 2,
+      },
+      {
+        id: "indexes-designed-for-query-patterns",
+        title: "Indexes Designed for Query Patterns",
+        level: 2,
+      },
+      {
+        id: "views-for-reporting",
+        title: "Views for Reporting",
+        level: 2,
+      },
+      {
+        id: "5-the-api-gateway-single-entry-point",
+        title: "5. The API Gateway: Single Entry Point",
+        level: 1,
+      },
+      {
+        id: "6-the-frontend-nextjs-with-zustand-and-react-query",
+        title: "6. The Frontend: Next.js with Zustand and React Query",
+        level: 1,
+      },
+      {
+        id: "state-management-architecture",
+        title: "State Management Architecture",
+        level: 2,
+      },
+      {
+        id: "data-fetching-with-react-query",
+        title: "Data Fetching with React Query",
+        level: 2,
+      },
+      {
+        id: "the-spend-dialog-ux",
+        title: "The Spend Dialog UX",
+        level: 2,
+      },
+      {
+        id: "7-the-jobs-service-automated-economic-governance",
+        title: "7. The Jobs Service: Automated Economic Governance",
+        level: 1,
+      },
+      {
+        id: "scheduler-architecture",
+        title: "Scheduler Architecture",
+        level: 2,
+      },
+      {
+        id: "concurrency-pattern",
+        title: "Concurrency Pattern",
+        level: 2,
+      },
+      {
+        id: "database-connection-pool-configuration",
+        title: "Database Connection Pool Configuration",
+        level: 2,
+      },
+      {
+        id: "8-authentication-phone-first-identity",
+        title: "8. Authentication: Phone-First Identity",
+        level: 1,
+      },
+      {
+        id: "9-content-economics-comments-and-posts",
+        title: "9. Content Economics: Comments and Posts",
+        level: 1,
+      },
+      {
+        id: "10-observability-and-performance",
+        title: "10. Observability and Performance",
+        level: 1,
+      },
+      {
+        id: "performance-benchmarks",
+        title: "Performance Benchmarks",
+        level: 2,
+      },
+      {
+        id: "prometheus-metrics-export",
+        title: "Prometheus Metrics Export",
+        level: 2,
+      },
+      {
+        id: "11-what-we-learned",
+        title: "11. What We Learned",
+        level: 1,
+      },
+      {
+        id: "whats-next",
+        title: "What's Next",
+        level: 1,
+      },
+    ],
   };
 
   return (
