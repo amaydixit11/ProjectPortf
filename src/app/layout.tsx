@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     siteName: "Amay Dixit Portfolio",
     images: [
       {
-        url: "/amay2.JPG",
+        url: "/amay2.jpeg",
         width: 1200,
         height: 630,
         alt: "Amay Dixit - Backend Engineer and Open Source Developer",
