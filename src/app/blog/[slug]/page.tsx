@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { formatDate } from "@/utils/blog";
 import { MDXComponents } from "@/components/MDXComponents";
+import remarkGfm from 'remark-gfm';
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -136,7 +137,15 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               Article
             </h2>
             <div className="prose prose-gray dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800 prose-code:text-primary">
-              <MDXRemote source={post.content} components={MDXComponents} />
+              <MDXRemote
+                source={post.content}
+                components={MDXComponents}
+                options={{
+                  mdxOptions: {
+                    remarkPlugins: [remarkGfm],
+                  },
+                }}
+              />
             </div>
           </div>
 
