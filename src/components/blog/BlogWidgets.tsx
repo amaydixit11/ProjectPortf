@@ -20,7 +20,7 @@ import React from "react";
 
 // Table of Contents Widget
 export const TableOfContentsWidget: React.FC<{ slug: string }> = ({ slug }) => {
-  const tocItems = {
+const tocItems = {
     "meta-learning": [
       { id: "introduction", title: "Introduction", level: 1 },
       {
@@ -152,53 +152,53 @@ export const TableOfContentsWidget: React.FC<{ slug: string }> = ({ slug }) => {
         level: 1,
       },
       {
-        id: "1-system-architecture-overview",
-        title: "1. System Architecture Overview",
+        id: "1-the-idea-making-engagement-meaningful",
+        title: "1. The Idea: Making Engagement Meaningful",
         level: 1,
       },
       {
-        id: "the-two-stack-design-philosophy",
-        title: "The Two-Stack Design Philosophy",
+        id: "what-tokens-are-and-arent",
+        title: "What Tokens Are (and Aren't)",
         level: 2,
       },
       {
-        id: "internal-communication-grpc-over-rest",
-        title: "Internal Communication: gRPC Over REST",
-        level: 2,
-      },
-      {
-        id: "2-the-token-economy-math-driven-fairness",
-        title: "2. The Token Economy: Math-Driven Fairness",
+        id: "2-the-token-economy-mathematics-of-fairness",
+        title: "2. The Token Economy: Mathematics of Fairness",
         level: 1,
       },
       {
-        id: "initial-allocation-and-inflows",
-        title: "Initial Allocation and Inflows",
+        id: "the-602020-split",
+        title: "The 60/20/20 Split",
         level: 2,
       },
       {
-        id: "the-602020-atomic-split",
-        title: "The 60/20/20 Atomic Split",
+        id: "comment-economics-a-different-model",
+        title: "Comment Economics: A Different Model",
         level: 2,
       },
       {
-        id: "row-level-locking-and-race-conditions",
-        title: "Row-Level Locking and Race Conditions",
+        id: "content-creation-costs",
+        title: "Content Creation Costs",
         level: 2,
       },
       {
-        id: "progressive-taxation",
-        title: "Progressive Taxation",
+        id: "progressive-taxation-preventing-wealth-concentration",
+        title: "Progressive Taxation: Preventing Wealth Concentration",
         level: 2,
       },
       {
-        id: "universal-basic-income-stipends",
-        title: "Universal Basic Income (Stipends)",
+        id: "universal-basic-income-the-stipend-system",
+        title: "Universal Basic Income: The Stipend System",
         level: 2,
       },
       {
-        id: "the-unlike-window",
-        title: "The Unlike Window",
+        id: "token-decay-recirculating-locked-value",
+        title: "Token Decay: Recirculating Locked Value",
+        level: 2,
+      },
+      {
+        id: "the-unlike-window-acknowledging-human-error",
+        title: "The Unlike Window: Acknowledging Human Error",
         level: 2,
       },
       {
@@ -207,8 +207,8 @@ export const TableOfContentsWidget: React.FC<{ slug: string }> = ({ slug }) => {
         level: 1,
       },
       {
-        id: "mlfq-a-brief-primer",
-        title: "MLFQ: A Brief Primer",
+        id: "the-mlfq-model",
+        title: "The MLFQ Model",
         level: 2,
       },
       {
@@ -222,13 +222,38 @@ export const TableOfContentsWidget: React.FC<{ slug: string }> = ({ slug }) => {
         level: 2,
       },
       {
-        id: "token-decay-keeping-content-fresh",
-        title: "Token Decay: Keeping Content Fresh",
+        id: "multiple-feed-types",
+        title: "Multiple Feed Types",
         level: 2,
       },
       {
-        id: "4-the-database-schema-designing-for-economic-integrity",
-        title: "4. The Database Schema: Designing for Economic Integrity",
+        id: "4-system-architecture-overview",
+        title: "4. System Architecture Overview",
+        level: 1,
+      },
+      {
+        id: "the-two-stack-design-philosophy",
+        title: "The Two-Stack Design Philosophy",
+        level: 2,
+      },
+      {
+        id: "internal-communication-grpc-over-rest",
+        title: "Internal Communication: gRPC Over REST",
+        level: 2,
+      },
+      {
+        id: "5-the-token-service-atomic-transactions-in-go",
+        title: "5. The Token Service: Atomic Transactions in Go",
+        level: 1,
+      },
+      {
+        id: "atomic-spend-with-row-level-locking",
+        title: "Atomic Spend with Row-Level Locking",
+        level: 2,
+      },
+      {
+        id: "6-the-database-schema-designed-for-economic-integrity",
+        title: "6. The Database Schema: Designed for Economic Integrity",
         level: 1,
       },
       {
@@ -242,38 +267,13 @@ export const TableOfContentsWidget: React.FC<{ slug: string }> = ({ slug }) => {
         level: 2,
       },
       {
-        id: "views-for-reporting",
-        title: "Views for Reporting",
-        level: 2,
-      },
-      {
-        id: "5-the-api-gateway-single-entry-point",
-        title: "5. The API Gateway: Single Entry Point",
+        id: "7-the-api-gateway-single-entry-point",
+        title: "7. The API Gateway: Single Entry Point",
         level: 1,
       },
       {
-        id: "6-the-frontend-nextjs-with-zustand-and-react-query",
-        title: "6. The Frontend: Next.js with Zustand and React Query",
-        level: 1,
-      },
-      {
-        id: "state-management-architecture",
-        title: "State Management Architecture",
-        level: 2,
-      },
-      {
-        id: "data-fetching-with-react-query",
-        title: "Data Fetching with React Query",
-        level: 2,
-      },
-      {
-        id: "the-spend-dialog-ux",
-        title: "The Spend Dialog UX",
-        level: 2,
-      },
-      {
-        id: "7-the-jobs-service-automated-economic-governance",
-        title: "7. The Jobs Service: Automated Economic Governance",
+        id: "8-the-jobs-service-automated-economic-governance",
+        title: "8. The Jobs Service: Automated Economic Governance",
         level: 1,
       },
       {
@@ -287,23 +287,28 @@ export const TableOfContentsWidget: React.FC<{ slug: string }> = ({ slug }) => {
         level: 2,
       },
       {
-        id: "database-connection-pool-configuration",
-        title: "Database Connection Pool Configuration",
+        id: "9-authentication-phone-first-identity",
+        title: "9. Authentication: Phone-First Identity",
+        level: 1,
+      },
+      {
+        id: "10-the-frontend-nextjs-with-zustand-and-react-query",
+        title: "10. The Frontend: Next.js with Zustand and React Query",
+        level: 1,
+      },
+      {
+        id: "state-management-architecture",
+        title: "State Management Architecture",
         level: 2,
       },
       {
-        id: "8-authentication-phone-first-identity",
-        title: "8. Authentication: Phone-First Identity",
-        level: 1,
+        id: "the-spend-dialog-ux",
+        title: "The Spend Dialog UX",
+        level: 2,
       },
       {
-        id: "9-content-economics-comments-and-posts",
-        title: "9. Content Economics: Comments and Posts",
-        level: 1,
-      },
-      {
-        id: "10-observability-and-performance",
-        title: "10. Observability and Performance",
+        id: "11-observability-and-performance",
+        title: "11. Observability and Performance",
         level: 1,
       },
       {
@@ -317,8 +322,8 @@ export const TableOfContentsWidget: React.FC<{ slug: string }> = ({ slug }) => {
         level: 2,
       },
       {
-        id: "11-what-we-learned",
-        title: "11. What We Learned",
+        id: "12-what-we-learned",
+        title: "12. What We Learned",
         level: 1,
       },
       {
