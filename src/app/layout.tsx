@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     description: "Backend Engineer specializing in system design and scalable applications. Open Source contributor to MOSIP and FOSSEE.",
     site: "@AmayDixit11",
     creator: "@AmayDixit11",
-    images: ["/amay2.JPG"],
+    images: ["/amay2.jpeg"],
   },
   robots: {
     index: true,
@@ -124,7 +124,7 @@ export default function RootLayout({
               "@type": "Person",
               "name": "Amay Dixit",
               "url": "https://amaydixit11.vercel.app",
-              "image": "https://amaydixit11.vercel.app/amay2.JPG",
+              "image": "https://amaydixit11.vercel.app/amay2.jpeg",
               "jobTitle": "Backend Engineer & Open Source Developer",
               "description": "Backend Engineer specializing in system design and scalable applications. Open Source contributor to MOSIP and FOSSEE projects.",
               "email": "amayd@iitbhilai.ac.in",
