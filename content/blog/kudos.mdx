@@ -19,13 +19,212 @@ Not money — but *tokens*. A finite digital currency where every user starts wi
 
 Building this required going far beyond typical CRUD architecture. Kudos is a polyglot microservices system with Go-powered performance cores, Node.js orchestration layers, atomic economic transactions, a custom feed-ranking algorithm inspired by OS scheduling theory, and automated background jobs that run a weekly economic cycle — taxation, redistribution, and content decay — every Sunday at midnight.
 
-This post is the complete technical story.
+This post starts with the idea and the economics — the *why* — and then goes deep into the architecture and the *how*.
 
 ---
 
-## 1. System Architecture Overview
+## 1. The Idea: Making Engagement Meaningful
 
-Kudos is composed of **8 independently deployable services** across two technology stacks, all orchestrated via Docker Compose and routed through a central API gateway.
+The core insight behind Kudos came from a simple observation: on every social platform, the cost of liking something is zero. And when something is free, people stop thinking about whether it's worth doing.
+
+The original vision was articulated in a single sentence:
+
+> *"By reducing how easy it is to like content, the bar for what goes viral goes a notch higher."*
+
+Kudos flips the engagement model entirely:
+
+- **Likes become investments** — you spend 1–10 tokens to signal how much you value a piece of content
+- **Quality rises naturally** — when engagement costs something, users think before they click
+- **Creators are rewarded directly** — great content earns tokens, not just dopamine
+- **Fair redistribution** — progressive taxation and weekly stipends ensure everyone can participate, regardless of when they joined
+
+The name itself captures the spirit. "Kudos" means genuine recognition — not a reflexive thumbs-up, but a deliberate transfer of something scarce and earned.
+
+### What Tokens Are (and Aren't)
+
+Tokens in Kudos are not cryptocurrency. They're not tradeable on exchanges. They're not a store of value in the financial sense.
+
+They're **social capital made explicit** — a scarce resource that represents your attention and endorsement. Spending tokens is saying: *"I believe this content is worth something from my limited supply."*
+
+Every user gets 100 tokens on signup. You earn more by creating content others find valuable. You lose tokens by spending them on content you appreciate. The economy is closed: no tokens are created out of thin air (except the initial allocation and weekly stipends), and some are permanently destroyed with every transaction.
+
+---
+
+## 2. The Token Economy: Mathematics of Fairness
+
+The economic design is the philosophical heart of Kudos. Every number was chosen deliberately, and they all interact in non-obvious ways.
+
+### The 60/20/20 Split
+
+When you spend tokens on a post, those tokens don't just transfer to the creator. They split three ways:
+
+```
+You spend 10 tokens on a post:
+
+  Creator receives:    6.0  (60%)  — direct reward for content
+  Government pool:     2.0  (20%)  — funds weekly stipends
+  Burned forever:      2.0  (20%)  — deflationary mechanism
+```
+
+The **60% creator share** ensures that making good content is worth it — a post that earns 100 tokens puts 60 in the creator's pocket.
+
+The **20% burn** is the deflationary pressure that keeps tokens scarce. Every transaction permanently removes tokens from the total supply. Without this, the economy would inflate: new users join, get 100 tokens, spend them, tokens accumulate at the top, and the whole system becomes worthless. Burning prevents that.
+
+The **20% government pool** is the redistribution mechanism — collected here, paid back out as weekly stipends to active users.
+
+### Comment Economics: A Different Model
+
+Comments have a deliberately harsher burn rate than posts, reflecting their lower content value:
+
+```
+You spend 5 tokens on a comment:
+
+  Post creator:    1.5  (30%)  — rewards content that sparks discussion
+  Commenter:       0.5  (10%)  — if their comment receives tokens
+  Government pool: 0.5  (10%)
+  Burned forever:  2.5  (50%)  — stronger deflationary pressure
+```
+
+The 50% burn on comments is intentional. Comments are cheaper to produce than posts, so their engagement signal needs stronger scarcity pressure to remain meaningful.
+
+### Content Creation Costs
+
+Posting and commenting also have costs, though with daily free allowances:
+
+| Action  | First N per Day | Additional Cost |
+| :------ | :-------------- | :-------------- |
+| Post    | 1 free/day      | 1 token each    |
+| Comment | 2 free/day      | 0.5 tokens each |
+
+The free allowances exist to prevent lockout — a new user with 100 tokens shouldn't be unable to participate. The costs exist to prevent spam and to keep content creation deliberate.
+
+### Progressive Taxation: Preventing Wealth Concentration
+
+Left unchecked, token economies stratify. Early adopters and power creators accumulate thousands of tokens. New users join with 100. The gap widens until engagement from newcomers feels pointless — their tokens barely register against the whale holders.
+
+Kudos addresses this with a weekly progressive tax that runs every Sunday at midnight:
+
+| Balance Range | Tax Rate | Applied To     |
+| :------------ | :------- | :------------- |
+| 0 – 200       | 0%       | Exempt         |
+| 201 – 500     | 5%       | Amount > 200   |
+| 501 – 1,000   | 10%      | Amount > 500   |
+| 1,001 – 2,000 | 15%      | Amount > 1,000 |
+| 2,001+        | 20%      | Amount > 2,000 |
+
+The tax is **marginal** — each bracket only applies to the amount within that range, identical to how income tax works. A user holding 1,500 tokens pays:
+
+```
+  0% × first 200 tokens  =   0.00
+  5% × next   300 tokens =  15.00
+ 10% × next   500 tokens =  50.00
+ 15% × last   500 tokens =  75.00
+ ─────────────────────────────────
+ Total weekly tax         = 140 tokens
+```
+
+That's 9.3% of their total balance — meaningful but not punishing. Someone holding 200 tokens pays nothing. Someone holding 50,000 tokens pays heavily, which is by design. Every collected token flows directly into the government pool.
+
+### Universal Basic Income: The Stipend System
+
+Collected taxes aren't destroyed — they're redistributed every Sunday at 1 AM (one hour after tax collection):
+
+```
+Base Stipend     = (Government Pool × 0.80) / Active Accounts
+Engagement Bonus = +10 tokens  (if you earned any tokens last week)
+New User Bonus   = +20 tokens  (for first 4 weeks after signup)
+```
+
+A typical week with 1,000 active users and a 10,000-token government pool:
+
+```
+Base stipend per user = (10,000 × 0.80) / 1,000 = 8 tokens
+
+New user who earned tokens last week:  8 + 10 + 20 = 38 tokens
+Active creator:                        8 + 10      = 18 tokens
+Passive user, been around > 4 weeks:   8            =  8 tokens
+Completely inactive user:              8            =  8 tokens
+```
+
+This creates a self-reinforcing feedback loop: active creators earn tokens directly from their audience *and* receive higher stipends. New users get extra runway. The system rewards activity without punishing inactivity — everyone gets the base.
+
+### Token Decay: Recirculating Locked Value
+
+Tokens spent on posts are "locked" to that post, contributing to its total token count and visibility score. But what happens to tokens on a post that nobody touches for months?
+
+Without a decay mechanism, old posts accumulate tokens forever, locking up economic value that can't circulate. Kudos solves this with a weekly decay rate:
+
+```
+decay_amount = current_post_tokens × decay_rate
+
+Active post (received tokens in last 7 days):  ~0% decay
+Inactive post (no tokens in 7+ days):           2% per week
+```
+
+Decayed tokens flow back to the government pool — not burned, recirculated. A post with 100 tokens that goes cold loses 2 tokens per week. Only truly abandoned content drains; genuinely evergreen content self-sustains because sporadic engagement keeps decay near zero.
+
+### The Unlike Window: Acknowledging Human Error
+
+Users have a **5-minute window to unlike** and receive a full refund. This was inspired by "undo send" — it acknowledges fat fingers without enabling gaming (you can't unlike after watching engagement metrics climb).
+
+When unlike happens, the entire transaction reverses atomically: tokens returned to spender, deducted from creator, content metrics rolled back.
+
+---
+
+## 3. The Feed Algorithm: Multi-Level Feedback Queues
+
+The feed is where the economics become visible. How do you surface content fairly when token counts, recency, and engagement velocity all matter?
+
+Most social feeds use some variant of `(engagement × weight) / time_decay`. Kudos takes inspiration from an unlikely source: **operating system process scheduling**.
+
+### The MLFQ Model
+
+Multi-Level Feedback Queue schedulers (used in macOS, Linux, and most modern OSes) maintain multiple priority queues. New processes start at the highest priority. If a process uses its entire CPU time slice — meaning it's compute-heavy and greedy — it gets demoted to a lower queue. Short, interactive jobs naturally float to the top.
+
+The insight maps perfectly to content: new posts start in the highest-priority queue (Hot). If they keep earning tokens, they stay hot. If engagement velocity drops, they demote. The system automatically separates genuinely valuable content from momentarily viral content.
+
+### Queue Definitions
+
+| Queue | Name   | Visibility | Promotion Condition      | Demotion Condition                |
+| :---- | :----- | :--------- | :----------------------- | :-------------------------------- |
+| 0     | Hot    | 2.0×       | Already highest          | velocity < 0.1/hr OR age > 24h   |
+| 1     | Warm   | 1.5×       | velocity > 2.0 tokens/hr | velocity < 0.1/hr OR age > 72h   |
+| 2     | Cold   | 1.0×       | velocity > 1.0 tokens/hr | age > 168h OR no tokens in 7 days |
+| 3     | Frozen | 0.3×       | N/A — terminal archive   | N/A                               |
+
+The visibility multiplier is applied to every post's score when ranking the feed. A post in Queue 0 with a raw score of 10 outranks a Queue 1 post with a raw score of 18 — recency and active engagement win.
+
+### The Visibility Score Formula
+
+Within each queue, posts rank by a composite score:
+
+```
+visibility_score = (token_score × 0.5) + (recency × 0.3) + (velocity × 0.2)
+
+Where:
+  token_score = log(1 + total_tokens_received)
+  recency     = 1 / (1 + hours_old / 24)
+  velocity    = total_tokens / hours_since_creation
+```
+
+The **logarithmic token score** prevents runaway accumulation — a post with 1,000 tokens doesn't score 10× higher than one with 100. The **recency factor** halves every 24 hours. The **velocity factor** rewards bursts of recent engagement over slow accumulation.
+
+### Multiple Feed Types
+
+| Feed         | What It Shows              | Sort Order                      |
+| :----------- | :------------------------- | :------------------------------ |
+| Global (Hot) | Queue 0 + 1 content        | visibility_score DESC           |
+| Trending     | High velocity posts        | engagement_velocity DESC        |
+| Following    | Posts from followed users  | recency + engagement weighted   |
+| For You      | Collaborative filtering    | spending pattern similarity     |
+
+The personalized "For You" feed finds users with similar spending histories, then surfaces posts those users engaged with that you haven't seen yet — spending patterns as taste signals, richer than click history because spending costs something.
+
+---
+
+## 4. System Architecture Overview
+
+With the economic model established, here's how it's built. Kudos is composed of **8 independently deployable services** across two technology stacks, all orchestrated via Docker Compose and routed through a central API gateway.
 
 ```
                           ┌─────────────────┐
@@ -68,19 +267,15 @@ Kudos is composed of **8 independently deployable services** across two technolo
 
 ### The Two-Stack Design Philosophy
 
-The stack split wasn't arbitrary — it was driven by the nature of each service's workload.
-
 **Node.js handles orchestration and I/O-bound work:** The API Gateway, Auth Service, Content Service, and User Service all run on Node.js. Node's non-blocking event loop is perfectly suited for the high concurrency of HTTP request routing, JWT validation, OTP delivery via Twilio, file uploads to S3/R2, and Prisma-based database queries that spend most of their time waiting on network I/O.
 
-**Go handles computation and precision-critical operations:** The Token Service, Feed Service, and Jobs Service are written in Go. Token spending requires sub-millisecond atomic database transactions where a race condition means someone's balance goes negative. Feed ranking involves floating-point math on thousands of posts per request. The weekly economic cycle processes every account and post in the system in parallel. Go's goroutines, static typing, and predictable performance characteristics make it the right tool for this layer.
+**Go handles computation and precision-critical operations:** The Token Service, Feed Service, and Jobs Service are written in Go. Token spending requires sub-millisecond atomic database transactions where a race condition means someone's balance goes negative. Feed ranking involves floating-point math on thousands of posts per request. The weekly economic cycle processes every account and post in the system in parallel. Go's goroutines, static typing, and predictable performance make it the right tool for this layer.
 
 ### Internal Communication: gRPC Over REST
 
-Between the API Gateway and the two Go services, all communication happens over **gRPC** — not HTTP/REST. This decision was deliberate.
+Between the API Gateway and the two Go services, all communication happens over **gRPC** — not HTTP/REST.
 
-gRPC uses HTTP/2 with binary Protocol Buffer serialization, giving roughly 5–10x the throughput of JSON over HTTP/1.1 for high-frequency calls. Since every page load hits the Token Service (to show balance) and Feed Service (to render posts), shaving latency here has a multiplying effect on user experience.
-
-The `.proto` contracts also serve as strict API contracts between Node.js and Go — no more "is that field `camelCase` or `snake_case`?" debates.
+gRPC uses HTTP/2 with binary Protocol Buffer serialization, giving roughly 5–10x the throughput of JSON over HTTP/1.1 for high-frequency calls. Since every page load hits the Token Service (to show balance) and Feed Service (to render posts), shaving latency here has a multiplying effect on user experience. The `.proto` contracts also serve as strict API contracts between Node.js and Go.
 
 ```protobuf
 // proto/token.proto
@@ -88,7 +283,6 @@ service TokenService {
   rpc SpendTokens (TokenSpendRequest) returns (TokenSpendResponse);
   rpc GetBalance (TokenBalanceRequest) returns (TokenBalanceResponse);
   rpc GetCommentCost (CommentCostRequest) returns (CommentCostResponse);
-  // ...
 }
 
 message TokenSpendRequest {
@@ -102,20 +296,11 @@ message TokenSpendRequest {
 
 ---
 
-## 2. The Token Economy: Math-Driven Fairness
+## 5. The Token Service: Atomic Transactions in Go
 
-The economic model is the philosophical heart of Kudos. Every design decision traces back to one goal: make engagement meaningful by making it costly.
+The Token Service is the most critical service in the system. Every economic operation flows through here, and correctness is non-negotiable.
 
-### Initial Allocation and Inflows
-
-Every new account receives **100 tokens** on creation — enough to explore, discover creators, and support a few posts before needing to earn more. The only ongoing inflows are:
-
-1. **Creator earnings** — 60% of tokens spent on your content
-2. **Weekly stipends** — distributed from the government pool (more on this below)
-
-### The 60/20/20 Atomic Split
-
-When a user spends tokens on a post, the distribution happens in a single PostgreSQL transaction that touches four rows across multiple entities:
+### Atomic Spend with Row-Level Locking
 
 ```go
 // internal/token/service.go
@@ -126,16 +311,16 @@ func (s *Service) SpendTokens(ctx context.Context, req *SpendTokensRequest) (*Sp
     defer tx.Rollback(ctx) // Safety net
 
     // Lock both accounts to prevent race conditions
-    spenderBalance, _ := s.repo.GetAccountBalance(ctx, tx, req.AccountID)     // FOR UPDATE
-    creatorBalance, _ := s.repo.GetAccountBalance(ctx, tx, creatorAccountID)  // FOR UPDATE
+    spenderBalance, _ := s.repo.GetAccountBalance(ctx, tx, req.AccountID)    // FOR UPDATE
+    creatorBalance, _ := s.repo.GetAccountBalance(ctx, tx, creatorAccountID) // FOR UPDATE
 
-    creatorShare := req.Amount * 0.60  // 60% to creator
-    govShare    := req.Amount * 0.20  // 20% to government pool
-    burnShare   := req.Amount * 0.20  // 20% permanently burned
+    creatorShare := req.Amount * 0.60
+    govShare     := req.Amount * 0.20
+    burnShare    := req.Amount * 0.20
 
     s.repo.UpdateAccountBalance(ctx, tx, req.AccountID, spenderBalance - req.Amount)
     s.repo.UpdateAccountBalance(ctx, tx, creatorAccountID, creatorBalance + creatorShare)
-    // govShare is recorded in system_state.government_pool
+    // govShare recorded in system_state.government_pool
     // burnShare increments system_state.burned_total — gone forever
 
     s.repo.CreateTransaction(ctx, tx, &Transaction{...})
@@ -143,150 +328,21 @@ func (s *Service) SpendTokens(ctx context.Context, req *SpendTokensRequest) (*Sp
 }
 ```
 
-The burn mechanism (20% of every transaction) is deflationary — it permanently removes tokens from circulation, preventing hyperinflation as new users join. The government pool (another 20%) funds the weekly redistribution cycle.
-
-### Row-Level Locking and Race Conditions
-
-A subtle but critical detail: we use `SELECT ... FOR UPDATE` to lock both the spender and creator account rows before modifying them. Without this, two simultaneous transactions could both read the same balance, both decide there's enough to spend, and both commit — resulting in a negative balance.
-
-For accounts with multiple "pages" (personas), we use the **account ID** as the lock key, not the page ID. This prevents a scenario where two different pages on the same account spend tokens simultaneously and overdraw the shared pool.
-
-### Progressive Taxation
-
-Wealth concentration is the silent killer of token economies. If early adopters accumulate thousands of tokens while new users struggle with their initial 100, the platform stratifies into haves and have-nots. Kudos addresses this with a weekly progressive tax:
-
-| Balance Range | Tax Rate | Applied To |
-| :------------ | :------- | :--------- |
-| 0 – 200       | 0%       | Exempt     |
-| 201 – 500     | 5%       | Amount > 200 |
-| 501 – 1,000   | 10%      | Amount > 500 |
-| 1,001 – 2,000 | 15%      | Amount > 1,000 |
-| 2,001+        | 20%      | Amount > 2,000 |
-
-A user holding 1,500 tokens pays:
-```
-  0% × 200 =  0.00
-  5% × 300 = 15.00
- 10% × 500 = 50.00
- 15% × 500 = 75.00
-─────────────────
-Total tax  = 140 tokens/week
-```
-
-This tax runs every Sunday at midnight UTC, processes accounts in parallel via goroutines with a semaphore-bounded concurrency limit of 50, and feeds every collected token directly into the government pool.
-
-### Universal Basic Income (Stipends)
-
-Taxes collected aren't destroyed — they're redistributed. Every Sunday at 1 AM (one hour after tax collection), the Jobs Service runs a stipend distribution:
-
-```
-Base Stipend = (Government Pool × 0.80) / Active Accounts
-+ Engagement Bonus: +10 tokens if you earned any tokens last week
-+ New User Bonus:   +20 tokens for first 4 weeks after signup
-```
-
-This creates a feedback loop: active creators earn more through both direct payments AND higher stipends. New users get extra runway to establish themselves. The system self-corrects toward activity rather than passive holding.
-
-### The Unlike Window
-
-One of the more unusual UX decisions: users have a **5-minute window to unlike** a post and receive a full refund. This was inspired by the "undo send" pattern — it acknowledges that people sometimes fat-finger a spend, but prevents gaming (you can't unlike after watching engagement metrics).
-
-When unlike happens, the entire transaction is reversed atomically: tokens returned to spender, deducted from creator, content metrics updated, transaction marked `unliked_at`.
+We use `SELECT ... FOR UPDATE` to lock both account rows before modifying them. Without this, two simultaneous transactions could both read the same balance, decide there's enough to spend, and both commit — resulting in a negative balance. For accounts with multiple pages, we lock on the **account ID** so two different personas can't overdraw the shared pool simultaneously.
 
 ---
 
-## 3. The Feed Algorithm: Multi-Level Feedback Queues
+## 6. The Database Schema: Designed for Economic Integrity
 
-Most social feeds use some variant of `(engagement * weight) / time_decay`. Kudos takes inspiration from an unlikely source: **operating system process scheduling**.
-
-### MLFQ: A Brief Primer
-
-Multi-Level Feedback Queue schedulers (used in macOS, Linux, and most modern OSes) maintain multiple priority queues. New processes start in the highest-priority queue. If they use their entire time slice (i.e., they're CPU-intensive), they get demoted to a lower queue. Short, interactive jobs naturally float to the top.
-
-We apply the same logic to content. New posts start in Queue 0 (Hot). If they keep receiving tokens, they stay hot. If engagement drops, they demote. The system learns which content is genuinely valuable versus momentarily viral.
-
-### Queue Definitions
-
-| Queue | Name | Visibility | Promotion Condition | Demotion Condition |
-| :---- | :--- | :--------- | :------------------ | :----------------- |
-| 0 | Hot | 2.0× | Already highest | velocity < 0.1 OR age > 24h |
-| 1 | Warm | 1.5× | velocity > 2.0 token/hr | velocity < 0.1 OR age > 72h |
-| 2 | Cold | 1.0× | velocity > 1.0 token/hr | age > 168h OR no tokens in 7 days |
-| 3 | Frozen | 0.3× | N/A — archive | N/A — terminal |
-
-The queue management job runs **every hour** via the Go scheduler. It pulls all non-frozen posts, calculates their current engagement velocity, and applies the transition rules:
-
-```go
-// internal/jobs/queue.go
-func (s *QueueService) processHotQueue(ctx context.Context, post PostInQueue, 
-    hoursInQueue, velocity float64) (string, error) {
-    
-    if hoursInQueue > HotQueueMaxHours || velocity < DemotionThreshold {
-        return s.demotePost(ctx, post.PostID, QueueWarm)
-    }
-    return s.updateVisibilityScore(ctx, post.PostID, velocity)
-}
-```
-
-### The Visibility Score Formula
-
-Within each queue, posts are ranked by a composite visibility score:
-
-```
-visibility_score = (token_score × 0.5) + (recency × 0.3) + (velocity × 0.2)
-```
-
-Where:
-- `token_score = log(1 + total_tokens)` — logarithmic to prevent runaway accumulation
-- `recency = 1 / (1 + hours_old / 24)` — smooth decay, halves every 24 hours
-- `velocity = tokens / hours_since_creation` — rewards recent engagement bursts
-
-The queue-level multiplier then amplifies this score: a post in Queue 0 with score 10 appears above a Queue 1 post with score 20 in the default Hot feed.
-
-### Token Decay: Keeping Content Fresh
-
-Posts don't just age out of queues — their token balances also decay over time. If a post receives no new tokens for 7+ days:
-
-```
-decay_amount = current_tokens × decay_rate
-```
-
-The default decay rate is 2% per week for inactive content. Active content (receiving tokens regularly) has a near-zero decay rate — it's self-sustaining.
-
-Decayed tokens flow back to the government pool, not into the void. This recirculates "locked up" economic value from old content back into the active economy.
-
-```go
-// internal/jobs/decay.go
-func (s *DecayService) applyDecayToPost(ctx context.Context, post PostForDecay) (float64, bool, error) {
-    daysSinceLastToken := int(time.Since(*post.LastTokenReceivedAt).Hours() / 24)
-    if daysSinceLastToken < 7 { return 0, false, nil } // Not yet eligible
-    
-    decayAmount := post.TotalTokens * post.DecayRate
-    newBalance := post.TotalTokens - decayAmount
-    shouldArchive := newBalance < 1.0 // Archive if less than 1 token remains
-    
-    // Atomic update: post balance + system state in one transaction
-    tx.Exec(ctx, updatePostQuery, newBalance, decayAmount, shouldArchive, post.PostID)
-    tx.Exec(ctx, createDecayEventQuery, ...)
-    tx.Commit(ctx)
-    
-    return decayAmount, shouldArchive, nil
-}
-```
-
----
-
-## 4. The Database Schema: Designing for Economic Integrity
-
-The PostgreSQL schema was designed with economic correctness as the primary constraint — not convenience.
+The PostgreSQL schema was designed with economic correctness as the primary constraint.
 
 ### Core Entities
 
-**`accounts`** — One per phone number. Holds the canonical token balance, lifetime earnings/spending, tax history, and stipend records. The phone number constraint (`CONSTRAINT chk_phone_format CHECK (phone_number ~ '^\+[1-9]\d{1,14}$')`) prevents mass account creation.
+**`accounts`** — One per phone number. Holds the canonical token balance, lifetime earnings/spending, tax history, and stipend records. The phone number constraint prevents mass account creation.
 
-**`pages`** — User-facing identities (usernames, avatars, bios). Accounts can have multiple pages in theory (different personas), but all pages share the same account token pool. This prevents gaming via fake account multiplication.
+**`pages`** — User-facing identities. All pages on an account share the same token pool — this prevents gaming via fake account multiplication.
 
-**`token_transactions`** — Every token movement is recorded. This table is append-only and includes a constraint ensuring the amounts always add up:
+**`token_transactions`** — Every token movement is recorded with a sum constraint:
 ```sql
 CONSTRAINT chk_amounts_sum CHECK (
     tokens_spent = tokens_to_creator + tokens_to_government + tokens_burned
@@ -296,8 +352,6 @@ CONSTRAINT chk_amounts_sum CHECK (
 **`system_state`** — A singleton table (enforced by `CHECK (id = 1)`) tracking global economic metrics: total circulation, government pool balance, total burned, last job run timestamps.
 
 ### Indexes Designed for Query Patterns
-
-The feed query is the highest-frequency read in the system. Its index was designed around the exact query pattern:
 
 ```sql
 -- Hot Feed: Queue 0-1, sorted by visibility score
@@ -315,55 +369,25 @@ CREATE INDEX idx_accounts_tax_eligible
     WHERE token_balance >= 200;
 ```
 
-The partial indexes (`WHERE deleted_at IS NULL`) dramatically reduce index size for soft-deleted records and keep hot-path queries fast as data accumulates.
-
-### Views for Reporting
-
-Two materialized view patterns handle common reporting queries without re-joining large tables:
-
-```sql
--- v_hot_feed: pre-joins posts with page info for the feed
-CREATE VIEW v_hot_feed AS
-SELECT p.post_id, p.content, p.total_tokens_received,
-       p.unique_spenders_count, p.visibility_score, ...
-       pg.username, pg.display_name, pg.avatar_url
-FROM posts p JOIN pages pg ON p.page_id = pg.page_id
-WHERE p.deleted_at IS NULL AND p.queue_level IN (0, 1)
-ORDER BY p.visibility_score DESC;
-
--- v_account_wealth: includes wealth rank for leaderboards
-CREATE VIEW v_account_wealth AS
-SELECT a.account_id, a.token_balance, ...,
-       RANK() OVER (ORDER BY a.token_balance DESC) as wealth_rank
-FROM accounts a LEFT JOIN posts p ON a.account_id = p.account_id;
-```
+The partial indexes (`WHERE deleted_at IS NULL`, `WHERE unliked_at IS NULL`) dramatically reduce index size and keep hot-path queries fast as data accumulates.
 
 ---
 
-## 5. The API Gateway: Single Entry Point
+## 7. The API Gateway: Single Entry Point
 
-All 8 backend services expose a single public port: **8080** on the API Gateway. Clients never talk directly to Auth, Content, or Go services.
+All 8 services expose a single public port — **8080** on the API Gateway. The gateway handles JWT authentication, rate limiting, request ID injection for tracing, gRPC bridging for Token and Feed routes, HTTP proxying for Node.js services, and error normalization.
 
-The gateway handles:
-
-1. **JWT Authentication** — Validates tokens on every protected route, attaches `accountId` and `phone` to the request context
-2. **Rate Limiting** — 100 requests per 15-minute window (general), 20/minute for token spending, 5/15-minutes for auth attempts
-3. **Request ID Injection** — Every request gets a `X-Request-ID` header for distributed tracing
-4. **gRPC Bridging** — Token and Feed routes are translated from HTTP/JSON to gRPC/Protobuf internally
-5. **HTTP Proxying** — Auth, Content, and User routes are proxied via Axios with configurable timeouts
-6. **Error Normalization** — gRPC status codes (FAILED_PRECONDITION, NOT_FOUND, etc.) are mapped to appropriate HTTP status codes with user-friendly messages
-
-One important architectural decision: the gateway **pre-charges tokens before creating content**. When a user posts or comments, the gateway first calls the Token Service to debit the account. Only if that succeeds does it proxy the request to the Content Service. This prevents content creation without payment, even if the Content Service is unavailable during the debit phase.
+One critical decision: the gateway **pre-charges tokens before creating content**. When a user posts or comments, the gateway first calls the Token Service to debit the account. Only if that succeeds does it proxy the request to the Content Service — preventing content creation without payment even under partial failure.
 
 ```typescript
 // api-gateway/src/routes/proxy.routes.ts
 router.post("/posts", authenticateToken, async (req, res, next) => {
-    // Step 1: Charge for post (deducts 1 token or uses free daily post)
+    // Step 1: Charge (deducts 1 token or uses free daily post)
     const chargeResult = await tokenClient.chargePost({ account_id: accountId });
-    
+
     // Step 2: Only create post if charge succeeded
     const response = await httpClient.post(
-        `${CONTENT_SERVICE_URL}/api/v1/posts`, req.body, 
+        `${CONTENT_SERVICE_URL}/api/v1/posts`, req.body,
         { headers: { Authorization: req.headers.authorization } }
     );
     res.status(response.status).json(response.data);
@@ -372,95 +396,24 @@ router.post("/posts", authenticateToken, async (req, res, next) => {
 
 ---
 
-## 6. The Frontend: Next.js with Zustand and React Query
+## 8. The Jobs Service: Automated Economic Governance
 
-The frontend is a Next.js 16 application with a neobrutalist design aesthetic — bold borders, offset shadows, and high contrast — reflecting the platform's philosophy of giving engagement more weight.
-
-### State Management Architecture
-
-Three Zustand stores handle client-side state:
-
-**`auth.store.ts`** — Persisted to localStorage via `zustand/middleware`. Holds JWT token, user profile, and page data. Uses Zustand's `persist` middleware with a custom `partialize` function to prevent ephemeral state from being written to disk.
-
-**`tokens.store.ts`** — In-memory token balance with optimistic update helpers. When a user spends tokens, the balance updates immediately (optimistic) before the API call returns — preventing the jarring "balance changed" flash.
-
-**`ui.store.ts`** — Toast notifications, modal state, and sidebar toggle. Toasts auto-dismiss via `setTimeout` in the store action itself.
-
-### Data Fetching with React Query
-
-All server state goes through TanStack Query with a structured key hierarchy:
-
-```typescript
-export const queryKeys = {
-  posts: {
-    detail: (id: string) => ["posts", "detail", id] as const,
-    userPosts: (username: string) => ["posts", "user", username] as const,
-  },
-  feed: {
-    global: (filters?: object) => ["feed", "global", filters] as const,
-    trending: (timeWindow: string) => ["feed", "trending", { timeWindow }] as const,
-  },
-  tokens: {
-    balance: ["tokens", "balance"] as const,
-    commentCost: ["tokens", "comment-cost"] as const,
-  }
-}
-```
-
-The key hierarchy ensures granular cache invalidation: spending tokens on a post invalidates `posts.detail(postId)`, `tokens.balance`, and `tokens.transactions` — but not the entire feed.
-
-### The Spend Dialog UX
-
-The token spend dialog shows a real-time breakdown of where tokens go, updating as the slider moves:
-
-```tsx
-// components/post/post-card.tsx
-<div className="grid grid-cols-3 gap-3 text-center">
-    <div className="p-3 bg-white rounded-lg border-2">
-        <p>Creator</p>
-        <p className="text-lg font-black text-green-600">
-            {(spendAmount[0] * 0.6).toFixed(1)}
-        </p>
-    </div>
-    <div className="p-3 bg-white rounded-lg border-2">
-        <p>Pool</p>
-        <p className="text-lg font-black text-indigo-600">
-            {(spendAmount[0] * 0.3).toFixed(1)}
-        </p>
-    </div>
-    <div className="p-3 bg-white rounded-lg border-2">
-        <p>Burned</p>
-        <p className="text-lg font-black text-amber-600">
-            {(spendAmount[0] * 0.1).toFixed(1)}
-        </p>
-    </div>
-</div>
-```
-
-This transparency is intentional — users should understand that their tokens are a finite resource being redistributed, not just "liked away" into a void.
-
----
-
-## 7. The Jobs Service: Automated Economic Governance
-
-The most unusual component of Kudos is the Jobs Service — a Go process that runs no user-facing HTTP routes, only scheduled background work that keeps the economic cycle turning.
+The Jobs Service is a Go process that runs no user-facing HTTP routes — only scheduled background work that keeps the economic cycle turning.
 
 ### Scheduler Architecture
 
-The scheduler uses Go's `time.NewTicker` and `time.AfterFunc` to run four independent goroutines:
-
-| Job | Schedule | Purpose |
-| :-- | :------- | :------ |
-| Decay | Daily at 2 AM UTC | Apply 2% weekly decay to inactive posts |
-| Tax Collection | Every Sunday 12 AM UTC | Progressive taxation on wealthy accounts |
-| Stipend Distribution | Every Sunday 1 AM UTC | Redistribute taxes to active users |
-| Queue Management | Every hour | Promote/demote posts between MLFQ tiers |
+| Job                  | Schedule                 | Purpose                                      |
+| :------------------- | :----------------------- | :------------------------------------------- |
+| Decay                | Daily at 2 AM UTC        | Apply 2% weekly decay to inactive posts      |
+| Tax Collection       | Every Sunday 12 AM UTC   | Progressive taxation on wealthy accounts     |
+| Stipend Distribution | Every Sunday 1 AM UTC    | Redistribute taxes to active users           |
+| Queue Management     | Every hour               | Promote/demote posts between MLFQ tiers      |
 
 Each job is idempotent and checks its last-run timestamp from `system_state` before executing, preventing duplicate processing if the service restarts.
 
 ### Concurrency Pattern
 
-All four jobs use the same concurrency pattern: a worker pool bounded by a semaphore, with results accumulated into a stats struct protected by a mutex:
+All four jobs use a worker pool bounded by a semaphore, with results accumulated into a stats struct protected by a mutex:
 
 ```go
 const maxConcurrent = 50
@@ -470,14 +423,14 @@ var mu sync.Mutex
 
 for _, account := range accounts {
     wg.Add(1)
-    sem <- struct{}{} // Acquire semaphore (blocks if pool is full)
-    
+    sem <- struct{}{} // Acquire semaphore
+
     go func(acc TaxableAccount) {
         defer wg.Done()
         defer func() { <-sem }() // Release semaphore
-        
-        tokensCollected, err := s.collectTaxFromAccount(ctx, acc)
-        
+
+        tokensCollected, _ := s.collectTaxFromAccount(ctx, acc)
+
         mu.Lock()
         stats.TotalCollected += tokensCollected
         mu.Unlock()
@@ -486,136 +439,130 @@ for _, account := range accounts {
 wg.Wait()
 ```
 
-This pattern processes up to 50 accounts simultaneously without overwhelming the database connection pool (capped at 50 connections for the Jobs Service, configured via `pgxpool`).
-
-### Database Connection Pool Configuration
-
-The Go services use `pgx/v5` with a custom pool configuration. Notably, we use `QueryExecModeDescribeExec` to avoid prepared statement conflicts across connection pool members:
-
-```go
-// internal/db/postgres.go
-config.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeDescribeExec
-
-config.BeforeAcquire = func(ctx context.Context, conn *pgx.Conn) bool {
-    if err := conn.Ping(ctx); err != nil {
-        return false // Discard unhealthy connections
-    }
-    return true
-}
-```
-
-The Jobs Service gets a larger pool (`MaxConns: 50`) than API services (`MaxConns: 25`) because it processes batches of hundreds of rows simultaneously.
+This processes up to 50 accounts simultaneously without overwhelming the database connection pool (capped at 50 connections for the Jobs Service via `pgxpool`).
 
 ---
 
-## 8. Authentication: Phone-First Identity
+## 9. Authentication: Phone-First Identity
 
-Kudos uses phone number verification (via Twilio) instead of email/password for two deliberate reasons:
+Kudos uses phone number verification (via Twilio) instead of email/password for two reasons: phone numbers are significantly harder to mass-create than email addresses (limiting Sybil attacks), and there's no password infrastructure to manage or breach.
 
-1. **One account per person** — Phone numbers are significantly harder to mass-create than email addresses, which limits Sybil attacks
-2. **No password management** — No forgotten passwords, no password resets, no credential stuffing
-
-The auth flow uses a stateless OTP approach:
+The auth flow is stateless OTP:
 
 ```
 1. POST /auth/send-otp { phone: "+1234567890" }
    → Creates phone_verifications record with SHA-256 hashed OTP
-   → Sends OTP via Twilio
-   → Returns verification_id
+   → Sends OTP via Twilio, returns verification_id
 
 2. POST /auth/verify-otp { verification_id, code }
-   → Validates code, checks expiry (5 minutes), checks attempts (max 3)
+   → Validates code, checks expiry (5 min), checks attempts (max 3)
    → Creates or retrieves Account record
    → Returns JWT (1hr access) + refresh token (7d)
-   → Access token payload: { accountId, phone }
 ```
 
-All downstream services validate JWTs using the same `JWT_SECRET` environment variable — no inter-service auth calls required. The Auth Service is only contacted for the initial OTP flow.
+All downstream services validate JWTs using the same `JWT_SECRET` — no inter-service auth calls required after the initial OTP flow.
 
 ---
 
-## 9. Content Economics: Comments and Posts
+## 10. The Frontend: Next.js with Zustand and React Query
 
-Content creation has an economic model too, not just token spending.
+The frontend is a Next.js 16 application with a neobrutalist design aesthetic — bold borders, offset shadows, high contrast — reflecting the platform's philosophy of giving engagement more weight.
 
-**Posts:** The first post of the day is free. Subsequent posts cost 1 token. This prevents spam while not blocking users who've run dry.
+### State Management Architecture
 
-**Comments:** The first 2 comments per day are free. Additional comments cost 0.5 tokens. This encourages discussion without turning it into a pay-wall.
+**`auth.store.ts`** — Persisted to localStorage. Holds JWT token, user profile, and page data, with a `partialize` function to prevent ephemeral state from being written to disk.
 
-The free-post and free-comment counters reset daily (tracked in `accounts.daily_comments_reset_at`) and are checked atomically in the Token Service before content is created.
+**`tokens.store.ts`** — In-memory token balance with optimistic update helpers. When a user spends tokens, the balance updates immediately before the API call returns — preventing the jarring "balance changed" flash.
 
-Comment token spending has a different distribution than post spending:
-- 30% → original post creator (rewards content that sparks discussion)
-- 10% → commenter (if their comment receives tokens from others)
-- 10% → government pool
-- 50% burned (stronger deflationary pressure, since comments are lower-value than posts)
+**`ui.store.ts`** — Toast notifications, modal state, and sidebar toggle.
+
+All server state goes through TanStack Query with a structured key hierarchy, ensuring granular cache invalidation: spending tokens on a post invalidates `posts.detail(postId)`, `tokens.balance`, and `tokens.transactions` — but not the entire feed cache.
+
+### The Spend Dialog UX
+
+The spend dialog shows a live breakdown of where tokens go as the slider moves — because transparency is part of the philosophy:
+
+```tsx
+<div className="grid grid-cols-3 gap-3 text-center">
+    <div className="p-3 bg-white rounded-lg border-2">
+        <p>Creator</p>
+        <p className="font-black text-green-600">{(amount * 0.6).toFixed(1)}</p>
+    </div>
+    <div className="p-3 bg-white rounded-lg border-2">
+        <p>Pool</p>
+        <p className="font-black text-indigo-600">{(amount * 0.3).toFixed(1)}</p>
+    </div>
+    <div className="p-3 bg-white rounded-lg border-2">
+        <p>Burned</p>
+        <p className="font-black text-amber-600">{(amount * 0.1).toFixed(1)}</p>
+    </div>
+</div>
+```
+
+Users should understand their tokens are a finite resource being redistributed, not just "liked away" into a void.
 
 ---
 
-## 10. Observability and Performance
+## 11. Observability and Performance
 
 ### Performance Benchmarks
 
-In testing, we hit these targets:
+| Operation                                    | Latency  |
+| :------------------------------------------- | :------- |
+| Token Spend (incl. DB transaction)           | < 40ms   |
+| Global Feed (20 posts)                       | ~50ms    |
+| Personalized Feed (collaborative filtering)  | ~150ms   |
+| Get Balance                                  | ~10ms    |
 
-| Operation | Latency |
-| :-------- | :------ |
-| Token Spend (incl. DB transaction) | < 40ms |
-| Global Feed (20 posts) | ~50ms |
-| Personalized Feed (collaborative filtering) | ~150ms |
-| Get Balance | ~10ms |
-
-The personalized feed's 150ms comes from two sequential queries: first finding users with similar spending patterns, then fetching posts those users engaged with that the current user hasn't seen yet. This is a simplified collaborative filtering approach — cosine similarity over spending history rather than a full ML model.
+The personalized feed's 150ms comes from two sequential queries: finding users with similar spending patterns, then fetching unseen posts those users engaged with.
 
 ### Prometheus Metrics Export
 
 The Jobs Service exposes `/metrics` in Prometheus format for production monitoring:
 
 ```go
-// internal/jobs/metrics.go
-output += "# HELP kudos_tokens_in_circulation Total tokens in circulation\n"
 output += formatMetric("kudos_tokens_in_circulation", metrics.TotalCirculation)
+output += formatMetric("kudos_government_pool", metrics.TotalGovernmentPool)
 output += formatMetricWithLabel("kudos_posts_by_queue", float64(metrics.HotQueuePosts), "queue", "hot")
-// ...
 ```
 
-Key metrics tracked: token supply by category (circulating, burned, government pool, locked on content), posts by queue level, weekly tax collected, weekly stipend distributed, weekly tokens decayed.
+Key metrics tracked: token supply by category (circulating, burned, government pool, locked on content), posts per queue level, weekly tax collected, weekly stipend distributed, weekly tokens decayed.
 
 ---
 
-## 11. What We Learned
-
-### Social media is a distributed systems and economics problem
-
-The hardest bugs weren't in the code — they were in the model. What happens to decayed tokens? (Government pool, not burned — we want recirculation.) How do we prevent two simultaneous spends overdrawing an account? (Row-level locks with `FOR UPDATE`.) What if a user likes their own content via an alt page? (The account-level unified pool means it's economically neutral — you'd just be transferring tokens to yourself.)
-
-### gRPC's ergonomics are rough but worth it
-
-The protobuf setup, code generation, and error mapping between gRPC status codes and HTTP status codes added significant boilerplate. But the structured contracts and binary efficiency paid dividends: the gateway's gRPC client code is strictly typed, and adding a new RPC endpoint requires updating both the `.proto` file and the handler — you physically cannot forget one.
-
-### Zustand + React Query is the right frontend stack for this
-
-We evaluated Redux, Jotai, and SWR. Zustand handles client-only state (auth, tokens, UI) elegantly without boilerplate. React Query handles server state (feed, posts, comments) with automatic caching, background refetching, and optimistic updates. The key insight: don't put server state in client state managers. They have different lifecycles.
+## 12. What We Learned
 
 ### Economic design is harder than technical design
 
-The tax brackets, decay rates, stipend formulas, and burn percentages all interact in non-obvious ways. We ran simulations before implementation: what happens in 6 months if 10,000 users join? Does the government pool accumulate to the point where stipends become meaninglessly small? (Yes, if decay rates are too low — decay feeds the pool, so it needs to be balanced against pool distribution speed.) These are game theory problems dressed up in TypeScript.
+The hardest bugs weren't in the code — they were in the model. What happens to decayed tokens? (Government pool, not burned — we want recirculation.) What if a user likes their own content via an alt page? (The account-level unified pool means it's economically neutral — just transferring tokens to yourself.) Does the government pool accumulate to the point where stipends become meaninglessly large? These are game theory problems dressed up in TypeScript.
+
+### Row-level locking is not optional
+
+Optimistic concurrency control (read-check-write without locks) fails under load. Two users spending tokens simultaneously can both read a balance, both decide to commit, and produce an inconsistent state. `SELECT ... FOR UPDATE` is not a performance pessimization — it's a correctness requirement.
+
+### gRPC's ergonomics are rough but worth it
+
+The protobuf setup and error mapping added significant boilerplate. But the structured contracts paid dividends: the gateway's gRPC client code is strictly typed, and adding a new RPC endpoint requires updating both the `.proto` file and the handler — you physically cannot forget one.
+
+### Zustand + React Query is the right frontend stack for this
+
+Don't put server state in client state managers. They have different lifecycles. Zustand handles client-only state (auth, tokens, UI) elegantly. React Query handles server state (feed, posts, comments) with automatic caching, background refetching, and optimistic updates.
 
 ---
 
 ## What's Next
 
-**Federated Hubs** — Allow different organizations (universities, companies, communities) to run Kudos clusters with their own token economies while sharing identity and optionally allowing cross-hub spending.
+**Federated Hubs** — Allow different organizations to run Kudos clusters with their own token economies while sharing identity and optionally allowing cross-hub spending.
 
 **Token Marketplace** — Official mechanism for gifting tokens between accounts, with transparent transaction history. Black markets will exist regardless; making the official version good enough to use is better than ignoring it.
 
-**ML-Powered Feed** — Replace the simplified collaborative filtering with a proper embedding-based recommendation model, trained on spending patterns rather than clicks.
+**ML-Powered Feed** — Replace the simplified collaborative filtering with a proper embedding-based recommendation model trained on spending patterns rather than clicks.
 
 **Verifiable Token Supply** — Publish a real-time cryptographic audit of the token economy: total created, burned, in circulation, in government pool. Maximum transparency.
 
 ---
 
-Building Kudos taught us that you can't bolt economics onto a social platform as an afterthought. The economic model has to be the architecture. Every table, every index, every service boundary was shaped by the question: *what ensures the economy stays fair?*
+Building Kudos taught us that you can't bolt economics onto a social platform as an afterthought. The economic model *has to be* the architecture. Every table, every index, every service boundary was shaped by one question: *what ensures the economy stays fair?*
 
 When engagement costs something real, it means something real. That's the whole bet.
 
