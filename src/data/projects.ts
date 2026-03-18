@@ -108,11 +108,53 @@ export const projectsData: ProjectsData = {
     //   status: "In Progress",
     //   type: "Personal",
     // },
+    {
+      id: 11,
+      name: "GitIntel",
+      description:
+        "Context-aware GitHub intelligence engine to extract hidden decisions and constraints from issues and PRs.",
+      longDescription:
+        "A sophisticated analysis tool that uses LLMs and GraphQL to transform messy GitHub discussion threads into structured, developer-ready digests for project onboarding and maintenance.",
+      tags: ["FastAPI", "Python", "GraphQL", "OpenAI", "D3.js"],
+      github: "https://github.com/amaydixit11/GitIntel",
+      demo: "https://gitintel.vercel.app",
+      status: "Beta",
+      type: "DevTools",
+      category: "AI & ML",
+    },
+    {
+      id: 12,
+      name: "ACORDE",
+      description:
+        "Local-first, peer-to-peer data synchronization engine with end-to-end encryption.",
+      longDescription:
+        "Always-Available Conflict-free Offline-first Replicated Distributed Data Synchronization Engine built with Go and libp2p. It uses CRDTs for conflict resolution and includes XChaCha20-Poly1305 content encryption.",
+      tags: ["Go", "SQLite", "libp2p", "CRDT", "Cryptography"],
+      github: "https://github.com/amaydixit11/acorde",
+      demo: "https://github.com/amaydixit11/acorde",
+      status: "Beta",
+      type: "Systems",
+      category: "Distributed Systems",
+    },
+    {
+      id: 13,
+      name: "Kudos",
+      description:
+        "Token-based social media platform where engagement has real value via a scarce token economy.",
+      longDescription:
+        "A microservices-based social platform that replaces traditional likes with a limited token supply, creating economic incentives for quality content. Features an MLFQ feed algorithm and progressive taxation.",
+      tags: ["Next.js", "Go", "Node.js", "PostgreSQL", "gRPC"],
+      github: "https://github.com/amaydixit11/Kudos",
+      demo: "https://github.com/amaydixit11/Kudos",
+      status: "In Development",
+      type: "Web App",
+      category: "Social Media",
+    },
   ],
   stats: {
-    totalProjects: 25,
-    publicRepos: 20,
-    contributions: 847,
-    languages: 8,
+    totalProjects: 28,
+    publicRepos: 23,
+    contributions: 912,
+    languages: 9,
   },
 };

@@ -32,7 +32,7 @@ const Hero = () => {
 
         <p className="text-gray-700 dark:text-gray-300">
           Skilled in C, C++, Python, JavaScript, TypeScript, React, Next.js,
-          Node.js, NestJS, MongoDB, PostgreSQL. Exploring Rust, Go, and system
+          Node.js, NestJS, Go, MongoDB, PostgreSQL. Exploring Rust and system
           design. Passionate about building scalable apps and contributing to
           OSS.
         </p>
