@@ -1,0 +1,292 @@
+---
+title: "HalfLife: Building a Temporal Re-Ranking Engine for RAG"
+excerpt: "RAG systems fail silently when old, authoritative facts override new truths. HalfLife is the middleware layer I built to fix it — combining intent-aware query classification, multi-strategy decay functions, and a learned MLP to make retrieval time-aware."
+date: "2026-03-17"
+category: "Systems"
+tags: ["RAG", "Python", "Machine Learning", "Information Retrieval", "Redis", "Qdrant", "NLP"]
+author: "Amay Dixit"
+published: true
+coverImage: "/blog/halflife/thumbnail.png"
+---
+
+## Introduction: The Problem RAG Doesn't Know It Has
+
+Retrieval-Augmented Generation is one of the most useful ideas to come out of the LLM era. Instead of relying entirely on what a model memorized during training, you give it access to a knowledge base — and it retrieves relevant chunks before generating an answer. Clean. Practical. Widely deployed.
+
+But there's a subtle failure mode almost nobody talks about: **RAG systems are temporally blind**.
+
+Ask a RAG system "What's the best NLP model today?" and it will do exactly what it was designed to do. It will embed your query, compute cosine similarity against its vector store, and return the semantically closest matches. The problem is that "semantically closest" has nothing to do with "most recent." A 2018 paper describing BERT as state-of-the-art has a near-perfect embedding match for that query — high authority, clean academic prose, formally structured. A 2026 community post about GPT-5 might score slightly lower on pure vector similarity, written more casually, with less textbook polish.
+
+The RAG system confidently returns the 2018 result. The user gets a wrong answer. And the system has no idea anything went wrong.
+
+This is the **"Latest vs. Greatest" problem** — and it's what I built **HalfLife** to solve.
+
+---
+
+## 1. The Core Insight: Information Has a Half-Life
+
+Different types of information decay at different rates. This is obvious when you say it out loud, but most retrieval systems treat all documents as equally timeless.
+
+Consider three facts:
+- "The capital of France is Paris." — This hasn't changed in centuries. Temporal decay: near zero.
+- "BERT is state-of-the-art for NLP." — True in 2018. Catastrophically wrong in 2026.
+- "The Fed raised interest rates last quarter." — Relevant for weeks, then superseded by the next decision.
+
+A retrieval system that doesn't model this distinction will mix all three together, weighted only by semantic similarity to the query. For timeless facts this is fine. For fast-moving domains — AI research, software versioning, leadership, financial data — it's systematically wrong.
+
+HalfLife sits **between the vector store and the LLM** as a reranking middleware. It doesn't replace semantic search. It augments it with a temporal signal, calibrated to the query's intent.
+
+The core scoring formula is:
+
+```
+final_score = α × vector_score + β × temporal_score + γ × trust_score
+```
+
+Where `α`, `β`, and `γ` shift dynamically based on whether the user is asking for the latest information, historical context, or a timeless fact.
+
+---
+
+## 2. Query Intent: Not All Questions Are Created Equal
+
+The biggest design decision in HalfLife was recognizing that temporal weighting is not uniform — it has to be **query-aware**.
+
+I identified three intent categories:
+
+**Fresh Intent** — The user wants the most current information. Keywords: "latest," "current," "today," "SOTA," "2026."
+
+| Weight | Value |
+| :----- | :---- |
+| vector (α) | 0.3 |
+| temporal (β) | 0.6 |
+| trust (γ) | 0.1 |
+
+Temporal score dominates. Even a slightly lower semantic match from a recent document will beat a perfectly-matched older one.
+
+**Historical Intent** — The user is explicitly asking about the past. Keywords: "history of," "originally," "how did X evolve," "what was."
+
+| Weight | Value |
+| :----- | :---- |
+| vector (α) | 0.4 |
+| temporal (β) | 0.5 |
+| trust (γ) | 0.1 |
+
+Here, the temporal score is **inverted** — `temporal_score = 1.0 - decay(Δt)`. Older documents score higher. A query like "What was the original React data-fetching pattern?" should surface `componentDidMount` from 2017, not Server Components from 2026.
+
+**Static Intent** — The user wants a timeless fact or definition. Keywords: "what is," "define," "explain," "formula for," or stability signals like "best" and "stable."
+
+| Weight | Value |
+| :----- | :---- |
+| vector (α) | 0.8 |
+| temporal (β) | 0.1 |
+| trust (γ) | 0.1 |
+
+The system falls back to near-vanilla vector search. "What is the Pythagorean theorem?" should not be affected by when the document was written.
+
+The `QueryIntentClassifier` handles this with a keyword-matching pipeline that also supports year detection — if a user mentions a specific year like "2023," the system automatically routes to historical intent. The classifier runs on every query before reranking, adding negligible latency.
+
+---
+
+## 3. Decay Functions: Modeling Information Aging
+
+Once intent is established, HalfLife needs to compute a temporal score for each retrieved chunk. This is done via pluggable decay functions registered in a central `DecayRegistry`.
+
+### Exponential Decay
+
+The default and most general function:
+
+```
+score = e^(-λ × Δt)
+```
+
+Where `Δt` is the age of the document in seconds and `λ` controls the decay rate. The half-life of the document — the point at which its temporal score drops to 0.5 — is `ln(2) / λ`.
+
+Different λ values encode different knowledge lifetimes:
+
+| Doc Type | λ | Approximate Half-Life |
+| :------- | :- | :-------------------- |
+| News / breaking updates | 1e-5 | ~19 hours |
+| Generic content | 5e-9 | ~4.4 years |
+| Research papers | 1e-9 | ~22 years |
+| Foundational/landmark | 1e-10 | ~220 years |
+
+A `DocTypeClassifier` assigns these priors at ingestion time based on keyword signals in the document text. News keywords ("breaking," "flash," "today") trigger fast decay. Research keywords ("abstract," "methodology," "citation") trigger slow decay.
+
+### Piecewise Decay
+
+For documentation and versioned software content, exponential decay is too smooth. A versioned API document is fully valid until it's deprecated — then it drops sharply. Piecewise decay models this step-function behavior:
+
+```python
+if delta_days < 7:
+    return 1.0
+elif delta_days < 365:
+    return 0.7
+else:
+    return 0.3
+```
+
+Docs stay near-perfect for a week, then plateau at 70% relevance for a year, then drop to 30%. This matches how developers actually use documentation.
+
+### Learned Decay
+
+The most experimental piece: a pure-NumPy MLP that predicts λ at ingestion time from chunk features.
+
+The network takes a 9-dimensional input vector:
+- `doc_type_onehot` [4] — news, research, documentation, generic
+- `source_domain_onehot` [3] — arxiv, github-docs, news-site
+- `text_length_norm` [1] — `len(text) / 2000`, clipped to [0, 1]
+- `feedback_ratio` [1] — `used / (used + ignored)`, cold-start default 0.5
+
+It outputs λ via a sigmoid scaled to log-space between `1e-8` and `1e-4`. The cold-start initialization approximates the rule-based priors — news maps to ~`1e-5`, research to ~`1e-7` — so an untrained model is no worse than the baseline classifier.
+
+After a benchmark run, `train_mlp.py` uses the results to derive better λ targets per doc type via a 1D grid search over 40 log-spaced candidates, then trains the MLP with pure NumPy SGD. The entire inference path requires zero ML dependencies at query time — just matrix multiplications in NumPy.
+
+---
+
+## 4. The Metadata Architecture: Redis + Qdrant
+
+HalfLife uses a clean separation between vector data and temporal metadata.
+
+**Qdrant** stores what changes rarely: the embedding vector, raw text, timestamp (in both ISO 8601 and Unix epoch for indexed range queries), doc type, and source domain.
+
+**Redis** stores what changes frequently: decay type, decay params (especially λ, which the feedback loop updates), trust score, score cache, and dirty flags for cache invalidation.
+
+This split is intentional. Temporal metadata mutates — feedback updates λ, event invalidation resets trust scores, the feedback loop shifts decay parameters over time. Keeping mutable state in Redis means you can update it without touching the vector index.
+
+The score cache is particularly important for latency:
+
+```python
+def get_cached_score(self, chunk_id: str) -> Optional[float]:
+    if self.client.exists(f"dirty:{chunk_id}"):
+        return None  # Stale — recompute
+    raw = self.client.get(f"score_cache:{chunk_id}")
+    return float(raw) if raw is not None else None
+```
+
+If nothing has changed for a chunk — no new feedback, no invalidation event — the cached temporal score is returned without recomputation. The dirty flag has a 1-hour TTL, so stale caches never persist indefinitely even if the clear call is missed.
+
+---
+
+## 5. The Fusion Layer: Min-Max Normalization
+
+A subtle but critical implementation detail: vector scores from different queries are not on the same scale. A query that retrieves chunks with similarities [0.82, 0.81, 0.79] has a very different distribution than one returning [0.95, 0.60, 0.45]. Applying fixed weights across unnormalized scores produces inconsistent behavior.
+
+HalfLife normalizes all signals within each batch using Min-Max normalization before fusion:
+
+```python
+def norm(val, vals):
+    v_max, v_min = max(vals), min(vals)
+    if v_max == v_min: return 0.5
+    return (val - v_min) / (v_max - v_min)
+```
+
+This maps every batch of vector scores and temporal scores to [0, 1] before the weighted sum. The weights become true proportional controls rather than scale-dependent parameters.
+
+There's also a **"Messy Reality" fallback** for chunks missing timestamp metadata. Instead of failing or defaulting to neutral, the reranker scans the text for four-digit year patterns using regex and infers a publication date. A chunk that says "released in 2019" gets scored as if published on January 1, 2019, with a slightly reduced trust score to reflect the uncertainty.
+
+---
+
+## 6. The Adversarial Benchmark: Proving It Works
+
+The hardest part of building HalfLife wasn't the code — it was designing an evaluation that could actually prove temporal reranking was doing something real, not just shuffling results in a way that happened to look better.
+
+The **Temporal Confusion Benchmark (TCB)** is built around a specific failure mode I call the **Authority Trap**. For each of five domains, I ingest two documents:
+
+1. **The Trap**: An old, authoritative, formally-written document from a textbook-style source. High trust score, clean embedding, naturally gets high cosine similarity.
+2. **The Truth**: A newer, slightly more conversational document with the correct current information.
+
+The benchmark then asks a fresh-intent query and measures whether the system returns the truth or falls into the trap.
+
+Example scenario:
+
+| | Document | Year | Source |
+| :- | :------- | :--- | :----- |
+| Trap | "BERT is the revolutionary SOTA standard for all NLP tasks..." | 2018 | textbook-archive |
+| Truth | "GPT-5 and Claude-4 dominate SOTA benchmarks in 2026..." | 2026 | community-docs |
+
+Standard vector search confidently returns BERT — it's cleaner, more formally worded, and semantically dense. HalfLife's temporal fusion inverts the ranking.
+
+To make the evaluation rigorous, every relevant chunk also has a **decoy twin** — identical text, mirrored timestamp. Because their embeddings are identical, cosine similarity cannot distinguish them. Only the temporal signal can. Any ranking improvement in the presence of decoys is attributable entirely to temporal awareness, not embedding quality.
+
+### Results
+
+| Query Intent | Baseline nDCG | HalfLife nDCG | Improvement |
+| :----------- | :------------ | :------------ | :---------- |
+| Fresh | 0.0487 | 0.1420 | **+191%** |
+| Historical | 0.0585 | 0.0159 | (TF Match ✓) |
+| Static | 0.0436 | 0.1906 | **+337%** |
+
+The historical result deserves explanation: HalfLife's nDCG drops because it's *correctly* surfacing older documents — which are the right answer for historical queries but score poorly on standard nDCG since relevance labels assumed fresh results. The Temporal Freshness metric (mean age of top-k results) tells the real story: for historical queries, HalfLife surfaces significantly older content than the baseline, which is exactly the intended behavior.
+
+---
+
+## 7. The Feedback Loop and Event Bus
+
+HalfLife includes two adaptive mechanisms for production deployment.
+
+**Feedback Updater**: When the LLM uses a chunk in its final response, the system can log a "was_useful" signal. The updater applies an Exponential Moving Average to shift λ:
+
+- If useful: `λ_new = λ × (1 - 0.1) + 1e-8 × 0.1` — nudge toward slower decay (landmark content)
+- If ignored: `λ_new = λ × (1 - 0.1) + 1e-4 × 0.1` — nudge toward faster decay (stale content)
+
+Over time, chunks that are repeatedly retrieved and used accumulate slower decay rates. Chunks that are retrieved but ignored accelerate toward obsolescence.
+
+**Event Bus**: For hard invalidation — a paper is retracted, a policy is reversed, a CEO steps down — the EventBus can apply either:
+- **Soft invalidation**: Trust score drops by 30%, λ doubles (content becomes suspect but not worthless)
+- **Hard invalidation**: Trust score goes to 0.0, λ jumps to `1e-3` (essentially instant obsolescence, ~12 minutes half-life)
+
+This enables real-time fact correction without requiring vector store updates.
+
+---
+
+## 8. Integration: Two Lines of Code
+
+The design goal was to make HalfLife invisible until you need it. If you already have a Qdrant search pipeline, the change looks like this:
+
+```python
+from halflife import HalfLife
+
+hl = HalfLife()
+
+# Before: results = qdrant.search(query=query)
+# After:
+results = qdrant.search(query=query)
+reranked = hl.rerank(query=query, chunks=results, top_k=5)
+```
+
+The package also ships with first-class integrations for LangChain (`HalfLifeReranker` as a `BaseDocumentCompressor`) and LlamaIndex (`HalfLifePostprocessor` as a `BaseNodePostprocessor`), so it drops into existing pipelines without restructuring.
+
+---
+
+## 9. What I Learned
+
+**Temporal relevance is a first-class signal, not an afterthought.** Most retrieval systems treat recency as an optional reranking hint, something you bolt on after the fact. HalfLife is built around the premise that time is as fundamental to relevance as semantic similarity — it just needs to be weighted differently per query.
+
+**Intent classification changes everything.** The single biggest improvement in HalfLife's benchmark performance came not from better decay functions but from routing queries to the right weight regime. Historical inversion — actually rewarding older documents for historical queries — is counterintuitive but correct.
+
+**Evaluation is the hardest part.** Standard nDCG doesn't capture temporal correctness. A system that correctly surfaces a 2026 document over a 2018 one for a fresh query scores well on nDCG — but only if the relevance labels were assigned with freshness in mind. The decoy mechanism and the Authority Trap corpus were designed specifically to create evaluation conditions where only the temporal signal matters.
+
+**The messy reality defense matters.** Real-world document stores are noisy. Timestamps are missing, malformed, or wrong. A system that fails gracefully — inferring dates from text, defaulting to neutral scores, logging warnings — is far more robust than one that assumes clean metadata.
+
+---
+
+## What's Next
+
+The roadmap has a few directions I'm actively thinking about:
+
+**Multi-vector store support** — right now HalfLife is Qdrant-native. Pinecone, Weaviate, and pgvector adapters are the next step for broader adoption.
+
+**Event-driven fact supersession** — the EventBus architecture is in place but the webhook listener for external invalidation events isn't complete. The vision is that a news feed or policy change notification can automatically propagate through the system, hard-invalidating chunks about superseded facts in real time.
+
+**Transformer-based intent classifier** — the current keyword-matching classifier is surprisingly effective but brittle at the edges. A small fine-tuned classifier would handle the ambiguous cases ("best current library" is fresh, "best practices" is static) with much higher precision.
+
+---
+
+RAG systems are making consequential decisions every day — in medical knowledge bases, legal research tools, enterprise search, customer support. A system that confidently returns a 2018 answer to a 2026 question isn't just inconvenient. In high-stakes domains, it's dangerous.
+
+HalfLife is my attempt to make retrieval systems honest about time.
+
+The full source is on GitHub. If you're building production RAG pipelines and thinking about temporal reliability, I'd genuinely like to hear how you're approaching it.
+
+---
+
+*Source code and benchmark data available at [github.com/amaydixit11/halflife](https://github.com/amaydixit11/halflife).*
