@@ -332,6 +332,23 @@ const tocItems = {
         level: 1,
       },
     ],
+  "halflife": [
+  { id: "introduction-the-problem-rag-doesnt-know-it-has", title: "Introduction: The Problem RAG Doesn't Know It Has", level: 1 },
+  { id: "1-the-core-insight-information-has-a-half-life", title: "1. The Core Insight: Information Has a Half-Life", level: 1 },
+  { id: "2-query-intent-not-all-questions-are-created-equal", title: "2. Query Intent: Not All Questions Are Created Equal", level: 1 },
+  { id: "3-decay-functions-modeling-information-aging", title: "3. Decay Functions: Modeling Information Aging", level: 1 },
+  { id: "exponential-decay", title: "Exponential Decay", level: 2 },
+  { id: "piecewise-decay", title: "Piecewise Decay", level: 2 },
+  { id: "learned-decay", title: "Learned Decay", level: 2 },
+  { id: "4-the-metadata-architecture-redis--qdrant", title: "4. The Metadata Architecture: Redis + Qdrant", level: 1 },
+  { id: "5-the-fusion-layer-min-max-normalization", title: "5. The Fusion Layer: Min-Max Normalization", level: 1 },
+  { id: "6-the-adversarial-benchmark-proving-it-works", title: "6. The Adversarial Benchmark: Proving It Works", level: 1 },
+  { id: "results", title: "Results", level: 2 },
+  { id: "7-the-feedback-loop-and-event-bus", title: "7. The Feedback Loop and Event Bus", level: 1 },
+  { id: "8-integration-two-lines-of-code", title: "8. Integration: Two Lines of Code", level: 1 },
+  { id: "9-what-i-learned", title: "9. What I Learned", level: 1 },
+  { id: "whats-next", title: "What's Next", level: 1 },
+],
   };
 
   return (
