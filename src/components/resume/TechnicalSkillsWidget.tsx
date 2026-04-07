@@ -1,4 +1,7 @@
 // Technical Skills Widget
+import React from "react";
+import { Code } from "lucide-react";
+
 const TechnicalSkillsWidget: React.FC = () => {
   const skillCategories = [
     {
@@ -74,3 +77,5 @@ const TechnicalSkillsWidget: React.FC = () => {
     </div>
   );
 };
+
+export { TechnicalSkillsWidget };

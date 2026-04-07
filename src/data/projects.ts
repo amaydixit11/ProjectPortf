@@ -238,6 +238,5 @@ export const projectsData: ProjectsData = {
     totalProjects: 11,
     publicRepos: 23,
     contributions: 1200,
-    languages: 9,
   },
 };
