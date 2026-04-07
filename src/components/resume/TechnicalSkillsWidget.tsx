@@ -2,6 +2,9 @@ import React from "react";
 import { Code } from "lucide-react";
 
 // Technical Skills Widget
+import React from "react";
+import { Code } from "lucide-react";
+
 const TechnicalSkillsWidget: React.FC = () => {
   const skillCategories = [
     {
