@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface Role {
   title: string;
@@ -80,9 +81,11 @@ export const ExperienceTimeline: React.FC = () => {
               <div className="flex gap-6">
                 {/* Company logo with proper positioning */}
                 <div className="relative z-10 flex-shrink-0">
-                  <img
-                    src={company.logoUrl}
+                  <Image
+                    src={company.logoUrl || "/placeholder.png"}
                     alt={`${company.organization} logo`}
+                    width={48}
+                    height={48}
                     className="w-12 h-12 rounded object-cover border-2 border-gray-200 dark:border-gray-700 bg-white"
                   />
                 </div>

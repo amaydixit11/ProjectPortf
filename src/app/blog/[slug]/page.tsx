@@ -10,27 +10,16 @@ import {
   Calendar,
   Clock,
   Tag,
-  Share2,
-  BookOpen,
-  TrendingUp,
-  MessageCircle,
-  Eye,
-  Heart,
-  User,
-  Rss,
 } from "lucide-react";
 import { Metadata } from "next";
 import { getAllPostSlugs, getPostBySlug } from "@/lib/blog";
 import {
-  CategoriesWidget,
   NewsletterWidget,
-  PopularPostsWidget,
   QuickActionsWidget,
-  ReadingProgressWidget,
-  RelatedPostsWidget,
   TableOfContentsWidget,
   TechStackWidget,
 } from "@/components/blog/BlogWidgets";
+
 
 interface BlogPostPageProps {
   params: {

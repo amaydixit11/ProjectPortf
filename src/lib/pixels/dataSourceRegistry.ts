@@ -1,9 +1,9 @@
 import { DataSource, DataSourceConfig } from "@/types/pixels";
 import { githubDataSource } from "./sources/github";
 import { codeforcesDataSource } from "./sources/codeforces";
-import { geeksforgeeksDataSource } from "./sources/gfg";
-import { leetcodeDataSource } from "./sources/leetcode";
-import { duolingoDataSource } from "./sources/duolingo";
+// import { geeksforgeeksDataSource } from "./sources/gfg";
+// import { leetcodeDataSource } from "./sources/leetcode";
+// import { duolingoDataSource } from "./sources/duolingo";
 class DataSourceRegistry {
   private sources: Map<string, DataSource> = new Map();
 

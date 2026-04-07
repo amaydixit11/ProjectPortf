@@ -6,11 +6,8 @@ import { DataSourceSelector } from "@/components/pixels/DataSourceSelector";
 import { dataSourceRegistry } from "@/lib/pixels/dataSourceRegistry";
 import {
   Activity,
-  Calendar,
   TrendingUp,
   Zap,
-  GitBranch,
-  Code2,
 } from "lucide-react";
 
 const Life = () => {

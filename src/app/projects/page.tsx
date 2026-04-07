@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { ProjectCard } from "@/components/projectCard";
 import { Widgets } from "@/components/projects/Widgets";
 import { projectsData } from "@/data/projects";

@@ -21,53 +21,41 @@ const Hero = () => {
         </h1>
 
         <h2 className="text-xl font-medium">
-          I love <span className="text-secondary">Backend Systems</span> and{" "}
-          <span className="text-accent">Infra</span>
+          I build <span className="text-secondary">Backend Systems</span> and{" "}
+          <span className="text-accent">Distributed Infrastructure</span>
         </h2>
 
         <p className="text-gray-600 dark:text-gray-300">
-          B.Tech student @ IIT Bhilai · Open-source contributor · Developer ·
-          Competitive Programmer
+          Pre-final year DSAI @ IIT Bhilai · CGPA 9.08 · Building from-scratch systems in Go, Rust, and Python
         </p>
 
         <p className="text-gray-700 dark:text-gray-300">
-          Skilled in C, C++, Python, JavaScript, TypeScript, React, Next.js,
-          Node.js, NestJS, Go, MongoDB, PostgreSQL. Exploring Rust and system
-          design. Passionate about building scalable apps and contributing to
-          OSS.
-        </p>
-
-        <p className="text-gray-700 dark:text-gray-300">
-          Coordinator of{" "}
-          <a href="#" className="font-semibold text-secondary">
-            OpenLake
-          </a>{" "}
-          (Open Source Club, IIT Bhilai) · Intern @{" "}
-          <a href="#" className="font-semibold text-secondary">
-            MOSIP
-          </a>{" "}
+          Skilled in Go, Python, Rust, C/C++, TypeScript, Next.js, PostgreSQL, libp2p, and CRDTs.
+          Built a BitTorrent client from scratch, CRDT-based sync engines (ACORDE),
+          and LLM-powered analysis tools. Led{" "}
+          <span className="font-semibold text-secondary">OpenLake</span>{" "}
+          (open-source society, IIT Bhilai) as Coordinator · Intern at{" "}
+          <span className="font-semibold text-secondary">MOSIP/C4GT</span>{" "}
           and{" "}
-          <a href="#" className="font-semibold text-secondary">
-            IIT Bombay (FOSSEE)
-          </a>
+          <span className="font-semibold text-secondary">FOSSEE, IIT Bombay</span>
         </p>
 
         {/* Call-to-Action Buttons */}
         <div className="flex flex-wrap gap-4 pt-4">
           <Link
             href="/projects"
-            className="flex items-center gap-3 px-2 py-2 text-sm bg-primary hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
+            className="flex items-center gap-3 px-4 py-2 text-sm bg-primary hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
           >
             <ExternalLink size={18} />
-            View My Projects
+            View Projects
           </Link>
 
           <Link
             href="/resume"
-            className="flex items-center gap-3 px-2 py-2 text-sm bg-secondary hover:bg-green-700 text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
+            className="flex items-center gap-3 px-4 py-2 text-sm bg-secondary hover:bg-green-700 text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
           >
             <Download size={18} />
-            Download Resume
+            Resume
           </Link>
           <div className="flex gap-3">
             <Link
@@ -97,7 +85,7 @@ const Hero = () => {
             <Link
               href="mailto:amayd@iitbhilai.ac.in"
               className="p-2 text-gray-600 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
-              aria-label="Website"
+              aria-label="Email"
             >
               <Mail size={25} />
             </Link>

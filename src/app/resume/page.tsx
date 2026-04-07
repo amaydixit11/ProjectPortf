@@ -6,76 +6,12 @@ import {
   Download,
   ExternalLink,
   Award,
-  Code,
-  Users,
   BookOpen,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 import { projectsData } from "@/data/projects";
-// Technical Skills Widget
-const TechnicalSkillsWidget: React.FC = () => {
-  const skillCategories = [
-    {
-      category: "Languages",
-      skills: [
-        "C/C++",
-        "Python",
-        "JavaScript",
-        "TypeScript",
-        "Go",
-        "Rust",
-        "SQL",
-      ],
-      color: "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300",
-    },
-    {
-      category: "Frameworks",
-      skills: ["React", "Next.js", "Node.js", "NestJS", "FastAPI", "Tauri"],
-      color:
-        "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300",
-    },
-    {
-      category: "Databases",
-      skills: ["PostgreSQL", "MongoDB", "Supabase", "Firebase"],
-      color:
-        "bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300",
-    },
-    {
-      category: "Tools & DevOps",
-      skills: ["Docker", "Kubernetes", "Git", "Linux", "Istio", "Envoy"],
-      color:
-        "bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300",
-    },
-  ];
-
-  return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6">
-      <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-        <Code size={18} />
-        Technical Skills
-      </h3>
-      <div className="space-y-4">
-        {skillCategories.map((category, index) => (
-          <div key={index}>
-            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              {category.category}
-            </h4>
-            <div className="flex flex-wrap gap-1">
-              {category.skills.map((skill, skillIndex) => (
-                <span
-                  key={skillIndex}
-                  className={`text-xs px-2 py-1 rounded ${category.color}`}
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+import TechnicalSkillsWidget from "@/components/resume/TechnicalSkillsWidget";
 
 // Education Widget
 const EducationWidget: React.FC = () => {
@@ -92,10 +28,10 @@ const EducationWidget: React.FC = () => {
             Indian Institute of Technology, Bhilai
           </h4>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            B.Tech in Computer Science & Engineering
+            B.Tech in Data Science & Artificial Intelligence
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-500">
-            2023 - 2027 (Expected) | CGPA: 9.03 (so far)
+            2023 - 2027 (Expected) | CGPA: 9.08 (so far)
           </p>
           <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
             <h5 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -208,6 +144,8 @@ const AchievementsWidget: React.FC = () => {
 
 // Open Source Contributions Widget
 const OpenSourceWidget: React.FC = () => {
+  const contributionCount = projectsData.stats.contributions;
+
   const contributions = [
     {
       project: "MOSIP Inji Stack",
@@ -224,7 +162,7 @@ const OpenSourceWidget: React.FC = () => {
     {
       project: "Personal Projects",
       role: "Creator",
-      description: "25+ public repositories with 847+ contributions",
+      description: `25+ public repositories with ${contributionCount}+ contributions`,
       tech: ["Various Tech Stacks"],
     },
   ];
@@ -295,7 +233,7 @@ const Resume: React.FC = () => {
                   Backend Engineer · System Designer · Open Source Enthusiast
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
-                  B.Tech Computer Science @ IIT Bhilai · Available for
+                  B.Tech in Data Science & Artificial Intelligence @ IIT Bhilai · Available for
                   opportunities
                 </p>
               </div>
