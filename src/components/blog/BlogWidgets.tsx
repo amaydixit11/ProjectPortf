@@ -3,8 +3,6 @@
 import { formatDate } from "@/utils/blog";
 import {
   ArrowLeft,
-  Calendar,
-  Clock,
   Tag,
   Share2,
   BookOpen,

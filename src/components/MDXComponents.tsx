@@ -53,9 +53,10 @@ type ImageProps = React.ImgHTMLAttributes<HTMLImageElement> & {
   children?: React.ReactNode;
 };
 
-const CustomImage = ({ src, children, ...props }: ImageProps) => {
+const CustomImage = ({ src, alt, ...props }: ImageProps) => {
   if (!src) return null;
-  return <img src={src} {...props} />;
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt={alt || ""} {...props} />;
 };
 
 // Use consistent props typing for all components

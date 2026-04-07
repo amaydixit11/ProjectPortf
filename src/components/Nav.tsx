@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Home, Info, FileText, Briefcase, BookOpen, Box } from "lucide-react";
 
@@ -20,14 +21,12 @@ export default function Nav() {
       <div className="hidden md:flex items-center justify-end mr-5 mt-3">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-10 h-10 rounded-full overflow-hidden relative">
-            <img
-              // src="/amay3.png"
+            <Image
               src="/icon.png"
               alt="Amay avatar"
+              width={40}
+              height={40}
               className="w-full h-full object-cover"
-              // className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/5 w-[200%] h-[200%] object-cover"
-
-              // style={{ objectPosition: "center 100%" }}
             />
           </div>
         </Link>

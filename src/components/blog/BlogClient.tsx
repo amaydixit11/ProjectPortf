@@ -3,7 +3,6 @@
 import React, { useState, useMemo } from 'react';
 import { BlogCard } from './BlogCard';
 import { BlogPost } from '@/types/blog';
-import { highlightText } from '@/utils/highlightText';
 import { Filter, Search, Tag } from 'lucide-react';
 import Link from 'next/link';
 
