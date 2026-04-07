@@ -29,9 +29,11 @@ export const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
-              {project.name}
-            </h3>
+            <Link href={`/projects/${project.slug}`}>
+              <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100 hover:text-primary transition-colors cursor-pointer">
+                {project.name}
+              </h3>
+            </Link>
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(project.status)}`}>
               {project.status}
             </span>
@@ -75,6 +77,12 @@ export const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
               <span className="text-sm">Live Demo</span>
             </Link>
           )}
+          <Link
+            href={`/projects/${project.slug}`}
+            className="flex items-center gap-1 text-gray-500 hover:text-primary transition-colors text-sm font-medium"
+          >
+            Details →
+          </Link>
         </div>
         {project.startDate && (
           <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-500">

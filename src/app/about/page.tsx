@@ -22,7 +22,12 @@ import {
 import { highlightText } from "@/utils/highlightText";
 import Link from "next/link";
 import ConnectWidget from "@/components/about/ConnectWidget";
-import Map from "@/components/about/Map";
+import dynamic from "next/dynamic";
+
+const Map = dynamic(() => import("@/components/about/Map"), {
+  loading: () => <p className="text-sm text-gray-500 animate-pulse">Loading map...</p>,
+  ssr: false,
+});
 
 const About: React.FC = () => {
   const currentTime = useCurrentTime();

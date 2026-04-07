@@ -128,7 +128,6 @@ export default function RootLayout({
               "jobTitle": "Backend Engineer & Open Source Developer",
               "description": "Backend Engineer specializing in system design and scalable applications. Open Source contributor to MOSIP and FOSSEE projects.",
               "email": "amayd@iitbhilai.ac.in",
-              "telephone": "+91-XXXXXXXXXX", // Add if you want
               "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "Durg",

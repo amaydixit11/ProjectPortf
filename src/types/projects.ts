@@ -2,6 +2,7 @@
 export interface Project {
   id: number;
   name: string;
+  slug: string;
   description: string;
   longDescription?: string;
   tags: string[];

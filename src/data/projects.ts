@@ -5,6 +5,7 @@ export const projectsData: ProjectsData = {
     {
       id: 1,
       name: "Kudos",
+      slug: "kudos",
       description:
         "Token-based social platform replacing likes with a scarce token economy to incentivize quality content.",
       longDescription:
@@ -26,6 +27,7 @@ export const projectsData: ProjectsData = {
     {
       id: 2,
       name: "ACORDE",
+      slug: "acorde",
       description:
         "Local-first peer-to-peer data sync engine with CRDTs and end-to-end encryption.",
       longDescription:
@@ -47,6 +49,7 @@ export const projectsData: ProjectsData = {
     {
       id: 3,
       name: "BitTorrent Client",
+      slug: "bittorrent-client",
       description:
         "Custom BitTorrent protocol client built from scratch in Go with P2P file sharing.",
       longDescription:
@@ -68,6 +71,7 @@ export const projectsData: ProjectsData = {
     {
       id: 4,
       name: "GitIntel",
+      slug: "gitintel",
       description:
         "Context-aware GitHub intelligence engine that extracts hidden decisions from issues and PRs using LLMs.",
       longDescription:
@@ -89,6 +93,7 @@ export const projectsData: ProjectsData = {
     {
       id: 5,
       name: "AcadMap",
+      slug: "acadmap",
       description:
         "Crowd-sourced course resource platform for IIT Bhilai students with Next.js and Supabase.",
       longDescription:
@@ -110,6 +115,7 @@ export const projectsData: ProjectsData = {
     {
       id: 6,
       name: "MetaIndex",
+      slug: "metaindex",
       description:
         "ML-based adaptive index selection using meta-learning to optimize database query performance.",
       longDescription:
@@ -131,6 +137,7 @@ export const projectsData: ProjectsData = {
     {
       id: 7,
       name: "HalfLife",
+      slug: "halflife",
       description:
         "Personal knowledge management system with Obsidian integration and automated workflows.",
       longDescription:
@@ -152,6 +159,7 @@ export const projectsData: ProjectsData = {
     {
       id: 8,
       name: "RAGfolio",
+      slug: "ragfolio",
       description:
         "Retrieval-Augmented Generation system for intelligent document querying and knowledge extraction.",
       longDescription:
@@ -173,6 +181,7 @@ export const projectsData: ProjectsData = {
     {
       id: 9,
       name: "Relix",
+      slug: "relix",
       description:
         "Distributed systems project for reliable, efficient data processing with fault tolerance.",
       longDescription:
@@ -194,6 +203,7 @@ export const projectsData: ProjectsData = {
     {
       id: 10,
       name: "B+ Tree Implementation",
+      slug: "bplus-tree",
       description:
         "Production-grade B+ Tree from scratch with insert, delete, search, and range queries.",
       longDescription:
@@ -215,6 +225,7 @@ export const projectsData: ProjectsData = {
     {
       id: 11,
       name: "Pokedle",
+      slug: "pokedle",
       description:
         "Pokemon-themed daily guessing game with animated reveals and streak tracking.",
       longDescription:
