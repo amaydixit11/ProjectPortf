@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { projectsData } from "@/data/projects";
-import { TechnicalSkillsWidget } from "@/components/resume/TechnicalSkillsWidget";
+import TechnicalSkillsWidget from "@/components/resume/TechnicalSkillsWidget";
 
 // Education Widget
 const EducationWidget: React.FC = () => {
