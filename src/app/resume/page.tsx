@@ -92,10 +92,10 @@ const EducationWidget: React.FC = () => {
             Indian Institute of Technology, Bhilai
           </h4>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            B.Tech in Computer Science & Engineering
+            B.Tech in Data Science & Artificial Intelligence
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-500">
-            2023 - 2027 (Expected) | CGPA: 9.03 (so far)
+            2023 - 2027 (Expected) | CGPA: 9.08 (so far)
           </p>
           <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
             <h5 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
