@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Code2,
   GitBranch,
+  MessageSquare,
   Trophy,
   TrendingUp,
   Star,
@@ -56,6 +57,13 @@ export const StatsDashboard: React.FC = () => {
       value: '23',
       subtitle: 'Active',
       color: 'text-purple-600',
+    },
+    {
+      icon: <MessageSquare size={24} />,
+      label: 'ChatGPT Conversations',
+      value: '5,180',
+      subtitle: 'Since Dec 2022',
+      color: 'text-blue-600',
     },
     {
       icon: <Trophy size={24} />,

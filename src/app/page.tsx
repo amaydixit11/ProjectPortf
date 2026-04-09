@@ -1,11 +1,15 @@
 import Hero from "@/components/Hero";
-// import { ProjectsGrid } from "@/components/ProjectsGrid";
+import { FeaturedProjects } from "@/components/FeaturedProjects";
+import { StatsDashboard } from "@/components/StatsDashboard";
+import { LatestWriting } from "@/components/LatestWriting";
 
 export default function Home() {
   return (
     <>
       <Hero />
-      {/* <ProjectsGrid /> New section added */}
+      <FeaturedProjects />
+      <StatsDashboard />
+      <LatestWriting />
     </>
   );
 }
