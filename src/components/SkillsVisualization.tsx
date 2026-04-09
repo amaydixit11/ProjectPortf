@@ -115,9 +115,9 @@ export const SkillsVisualization: React.FC = () => {
 
         {/* Skills Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {skillsData.map((category, index) => (
+          {skillsData.map((category) => (
             <div
-              key={index}
+              key={category.title}
               className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 hover:shadow-lg transition-all duration-300"
             >
               {/* Category Header */}
@@ -132,24 +132,34 @@ export const SkillsVisualization: React.FC = () => {
 
               {/* Skills List */}
               <div className="space-y-4">
-                {category.skills.map((skill, skillIndex) => (
-                  <div key={skillIndex} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {skill.name}
-                      </span>
-                      <span className="text-xs text-gray-500 dark:text-gray-500">
-                        {skill.level}%
-                      </span>
-                    </div>
-                    <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                {category.skills.map((skill) => {
+                  const clampedLevel = Math.max(0, Math.min(100, skill.level));
+                  return (
+                    <div key={skill.name} className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          {skill.name}
+                        </span>
+                        <span className="text-xs text-gray-500 dark:text-gray-500">
+                          {clampedLevel}%
+                        </span>
+                      </div>
                       <div
-                        className={`h-full bg-gradient-to-r ${category.color} rounded-full transition-all duration-500`}
-                        style={{ width: `${skill.level}%` }}
-                      />
+                        className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden"
+                        role="progressbar"
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={clampedLevel}
+                        aria-label={`${skill.name} proficiency: ${clampedLevel}%`}
+                      >
+                        <div
+                          className={`h-full bg-gradient-to-r ${category.color} rounded-full transition-all duration-500`}
+                          style={{ width: `${clampedLevel}%` }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}

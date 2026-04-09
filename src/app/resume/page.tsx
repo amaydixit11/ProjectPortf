@@ -241,7 +241,6 @@ const Resume: React.FC = () => {
                 <Link
                   href="/resume.pdf"
                   className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium shadow-md hover:shadow-lg"
-                  target="_blank"
                   download
                 >
                   <Download size={16} />

@@ -16,7 +16,16 @@ const Projects: React.FC = () => {
   const allProjects = projectsData.projects;
 
   // Extract unique categories and statuses
-  const categories = ['All', ...Array.from(new Set(allProjects.map(p => p.category)))];
+  const categories = [
+    'All',
+    ...Array.from(
+      new Set(
+        allProjects
+          .map((p) => p.category)
+          .filter((category): category is string => Boolean(category))
+      )
+    ),
+  ];
   const statuses = ['All', ...Array.from(new Set(allProjects.map(p => p.status)))];
 
   const filteredProjects = useMemo(() => {

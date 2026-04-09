@@ -19,7 +19,6 @@ import {
   quickLinksData,
 } from "@/data/about";
 import { highlightText } from "@/utils/highlightText";
-import Link from "next/link";
 import ConnectWidget from "@/components/about/ConnectWidget";
 import Map from "@/components/about/Map";
 import { SkillsVisualization } from "@/components/SkillsVisualization";
@@ -78,11 +77,11 @@ const About: React.FC = () => {
               Let&apos;s Connect
             </h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              Always open to chatting about tech, projects, or ideas. Feel free to
-              reach out via my socials in the Quick Links section, or reach out to me via email at{" "}
-              <Link href={`mailto:${"amayd@iitbhilai.ac.in"}`} className="text-blue-500">
-                {"amayd@iitbhilai.ac.in"}
-              </Link>
+              Always open to chatting about tech, projects, or ideas. Connect via my
+              Quick Links or email me at{" "}
+              <a href="mailto:amayd@iitbhilai.ac.in" className="text-blue-500">
+                amayd@iitbhilai.ac.in
+              </a>
             </p>
           </div>
         </div>

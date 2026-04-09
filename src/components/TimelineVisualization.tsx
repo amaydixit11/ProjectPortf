@@ -100,7 +100,7 @@ export const TimelineVisualization: React.FC = () => {
           <div className="space-y-8">
             {timelineData.map((event, index) => (
               <div
-                key={index}
+                key={`${event.date}-${event.title}`}
                 className={`relative flex items-start gap-6 md:gap-0 ${
                   index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                 }`}
