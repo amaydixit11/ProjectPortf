@@ -237,14 +237,23 @@ const Resume: React.FC = () => {
                   opportunities
                 </p>
               </div>
-              <Link
-                href="/amay-dixit-resume.pdf"
-                className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-                target="_blank"
-              >
-                <Download size={16} />
-                Download PDF
-              </Link>
+              <div className="flex flex-col gap-2">
+                <Link
+                  href="/resume.pdf"
+                  className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium shadow-md hover:shadow-lg"
+                  target="_blank"
+                  download
+                >
+                  <Download size={16} />
+                  Download PDF
+                </Link>
+                <Link
+                  href="mailto:amayd@iitbhilai.ac.in"
+                  className="flex items-center gap-2 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium shadow-md hover:shadow-lg"
+                >
+                  Contact Me
+                </Link>
+              </div>
             </div>
           </div>
 
